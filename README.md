@@ -116,7 +116,7 @@
 ### 开发
 
 ```bash
-git clone <仓库地址> subaudi
+git clone https://github.com/Ti-yor/subaudi.git subaudi
 cd subaudi
 npm ci
 
