@@ -1,0 +1,138 @@
+{
+  "case": "K01",
+  "status": "failed",
+  "error": "正文引用不一致",
+  "raw": {
+    "status": "complete",
+    "title": "为什么独立时方差可以相加：拆解 Var(X+Y)=Var(X)+Var(Y)",
+    "brief": "这句话说：两个随机变量 X、Y 相互独立、且各自的方差都存在（有限）时，它们之和的方差等于各自方差之和。关键点在于「方差」衡量的是随机变量围绕均值的平均波动，不是取值本身；而「独立」这个条件用来消掉展开式里那个交叉项 2Cov(X,Y)。若改为不独立，等式一般不成立，会多出一个协方差项。",
+    "sections": [
+      {
+        "local_id": "S_def",
+        "kind": "prerequisite",
+        "title": "先把三个词变成能算的东西",
+        "body_markdown": "**随机变量**：取值带随机性的量，例如掷一枚骰子的点数 X。它的**期望** E(X) 是长期平均值。\n\n**方差**衡量「偏离期望的程度」：\n\n> Var(X) = E[(X − E(X))²]。\n\n先算每个取值与均值的差，平方（避免正负抵消、并放大大偏差），再取平均。方差大 = 波动大。它**不为负**。\n\n**独立**（针对本句）：X 的取值不影响 Y 取值的概率分布（连续情形更精确地说联合分布等于边缘分布之积；这里用「互不影响」够用）。\n\n**协方差**：Cov(X,Y) = E[(X−E(X))(Y−E(Y))]，衡量 X、Y 一起偏离各自均值的方向是否一致。它是对称的，取值可正可负。可以验证 Cov(X,X)=Var(X)。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "S_deriv",
+        "kind": "mechanism",
+        "title": "推导：为什么恰好是相加，不多不少",
+        "body_markdown": "设 μ_X=E(X)，μ_Y=E(Y)。令 X、Y 独立（本步推导中我们只用到下面标注的地方真正需要「独立」）。\n\n先看 X+Y 的期望：\n\n> E(X+Y) = E(X) + E(Y) = μ_X + μ_Y。（这一步对任意 X、Y 都成立，不需要独立。）\n\n所以\n\n> X+Y − E(X+Y) = (X − μ_X) + (Y − μ_Y)。\n\n把它平方：\n\n> (X+Y − E(X+Y))² = (X−μ_X)² + (Y−μ_Y)² + 2(X−μ_X)(Y−μ_Y)。\n\n两边取期望，用「期望可以逐项相加」：\n\n> Var(X+Y) = E[(X−μ_X)²] + E[(Y−μ_Y)²] + 2E[(X−μ_X)(Y−μ_Y)]\n> = Var(X) + Var(Y) + 2Cov(X,Y)。\n\n这就是一般公式。**关键一步**：当 X、Y 独立时，交叉项的期望可分解为\n\n> E[(X−μ_X)(Y−μ_Y)] = E(X−μ_X)·E(Y−μ_Y) = 0·0 = 0，\n\n所以 2Cov(X,Y)=0，剩下 Var(X)+Var(Y)。这就是原句的来源。",
+        "evidence_ids": [
+          "S1"
+        ]
+      },
+      {
+        "local_id": "S_indep",
+        "kind": "boundary",
+        "title": "「独立」到底用在哪里，能不能放宽",
+        "body_markdown": "独立**不是**用来得到 E(X+Y)=E(X)+E(Y) 的——那一步恒成立。独立只用于让交叉项的期望拆成两个期望之积，从而 Cov=0。\n\n所以原句的条件可以精确地替换为更弱的：**只要 Cov(X,Y)=0**，等式就成立（例如某些不独立但线性不相关的变量）。不过「独立 ⇒ Cov=0」单向成立；反过来 Cov=0 不保证独立。\n\n常见踩坑：把「不相关」等同于「独立」——反例见下方 micro_check。\n\n另一点：**方差有限**这个条件不能省。它保证 E[(X−μ_X)²] 是有限数，等式两边都不是 ∞−∞ 这类未定义情形。",
+        "evidence_ids": [
+          "S1"
+        ]
+      },
+      {
+        "local_id": "S_example",
+        "kind": "example",
+        "title": "拿具体数字走一遍",
+        "body_markdown": "掷两枚公平骰子，点数分别记为 X、Y，独立同分布。\n\n单枚骰子：μ = (1+2+…+6)/6 = 3.5，\nVar(X) = [(1−3.5)² + (2−3.5)² + … + (6−3.5)²]/6 = 35/12 ≈ 2.917。\n\n因为独立，Var(X+Y) = 35/12 + 35/12 = 35/6 ≈ 5.833，标准差 ≈ 2.415。\n\n换个说法验证：X+Y 取 2…12，均值 7；按概率算 E[(X+Y−7)²] 也是 35/6，吻合。\n\n**反例（不独立则不成立）**：令 Y=X。此时 Var(X+Y)=Var(2X)=4Var(X)，而 Var(X)+Var(Y)=2Var(X)。相差 2Cov(X,X)=2Var(X)，正好对上一般公式。",
+        "evidence_ids": []
+      }
+    ],
+    "return_to_source": "原句「独立且方差有限时，Var(X+Y)=Var(X)+Var(Y)」在一般公式 Var(X+Y)=Var(X)+Var(Y)+2Cov(X,Y) 里，隐含了作者省略的一步：独立使交叉项 2Cov(X,Y)=0。所以你读回这句话时，应把它理解为「一般公式在协方差为零这个条件下的特例」；「独立」只是保证协方差为零的常用充分条件，而「方差有限」保证方差是有限实数。若把「独立」改成「不独立」，等式一般要补回 2Cov(X,Y) 项。",
+    "claims": [
+      {
+        "local_id": "C1",
+        "text": "原句陈述了一个条件等式：X、Y 独立且方差有限时，Var(X+Y)=Var(X)+Var(Y)。",
+        "appears_in": [
+          "S_deriv"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "C2",
+        "text": "一般地 Var(X+Y)=Var(X)+Var(Y)+2Cov(X,Y)，原句是该式在协方差为零时的特例。",
+        "appears_in": [
+          "S_deriv",
+          "S_indep",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "S_deriv"
+      },
+      {
+        "local_id": "C3",
+        "text": "独立时交叉项期望可分解，使 Cov(X,Y)=0；但 Cov=0 不推出独立。",
+        "appears_in": [
+          "S_indep"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "S_indep"
+      },
+      {
+        "local_id": "C4",
+        "text": "掷一枚公平骰子的方差是 35/12，两枚独立骰子之和的方差是 35/6。",
+        "appears_in": [
+          "S_example"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "S_example"
+      }
+    ],
+    "followups": [
+      {
+        "term_or_phrase": "Cov(X,Y) 与不相关",
+        "section_id": "S_deriv",
+        "why": "想知道一般公式里那个交叉项怎么算、什么时候为零。"
+      },
+      {
+        "term_or_phrase": "方差有限的含义与反例",
+        "section_id": "S_indep",
+        "why": "想知道去掉这个条件会遇到什么麻烦（例如重尾分布）。"
+      },
+      {
+        "term_or_phrase": "有限个变量的推广",
+        "section_id": "S_deriv",
+        "why": "多个独立变量之和时方差是否仍逐项相加。"
+      }
+    ],
+    "micro_check": {
+      "question": "已知 E(X)=1, Var(X)=4, E(Y)=2, Var(Y)=9, Cov(X,Y)=3。求 Var(X+Y)。再问：如果 X、Y 独立，Var(X+Y) 是多少？为什么两个答案不同？",
+      "hint": "先用一般公式 Var(X+Y)=Var(X)+Var(Y)+2Cov(X,Y)。",
+      "answer": "Var(X+Y)=4+9+2×3=19。若独立则 Cov=0，得 4+9=13。差别来自:不独立时存在正协方差，X、Y 常常同方向偏离均值，叠加后波动更大。",
+      "success_criteria": [
+        "代入一般公式得到 19",
+        "识别独立时交叉项消失得到 13",
+        "能指出差异源于 Cov(X,Y)≠0"
+      ],
+      "remediation": "若算成 13 忘了协方差项，回看 S_deriv 的第 2Cov(X,Y) 一步；若不会判断独立与否，回看 S_indep。"
+    },
+    "unresolved": [
+      {
+        "issue": "原句未定义「独立」和「方差」的精确外延，也未说明变量是离散还是连续。",
+        "effect_on_answer": "不影响本解释的结论（两种情形下的推导与公式一致），但读者若想套用连续情形需自备积分定义。",
+        "next_step": "若需严格证明连续情形，查阅概率论教材中期望与方差的定义与独立性公理。"
+      }
+    ],
+    "clarification": null
+  },
+  "usage": {
+    "prompt_tokens": 1983,
+    "completion_tokens": 2288,
+    "total_tokens": 4271,
+    "prompt_cache_hit_tokens": 0,
+    "prompt_cache_miss_tokens": 1983,
+    "response_model": "deepseek-flash"
+  },
+  "elapsedMs": 10181,
+  "human_review": null,
+  "date": "2026-09-21T23:32:03.195Z"
+}

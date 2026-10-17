@@ -1,0 +1,33 @@
+<!doctype html><meta charset="utf-8"><style>
+html,body{background:#ffffff!important;color:#1d1f21!important}
+body{margin:0;font-family:"Source Han Serif SC", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif;font-size:calc(18px + 1px);line-height:1.85;overflow-wrap:anywhere;-webkit-font-smoothing:antialiased}
+body > *{max-width:34em}
+p{margin:0 0 1.1em}
+ul,ol{margin:0 0 1.1em;padding-left:1.5em}
+li{margin:0.35em 0}
+h1,h2,h3{line-height:1.4;margin:1.2em 0 0.6em;font-weight:600}
+h1{font-size:1.25em}h2{font-size:1.15em}h3{font-size:1.05em}
+code,pre{font-family:"Cascadia Mono", "Consolas", monospace;font-size:0.9em}
+pre{background:#e9e8e4;padding:12px 14px;border-radius:6px;white-space:pre-wrap}
+code{background:#e9e8e4;padding:1px 4px;border-radius:4px}
+pre code{background:none;padding:0}
+table{border-collapse:collapse;margin:0 0 1.1em}
+th,td{border:1px solid #e2e1dc;padding:7px 11px;text-align:left}
+th{background:#f1f1ee}
+blockquote{margin:0 0 1.1em;padding:2px 0 2px 14px;border-left:2px solid #cfcdc6;color:#4a4c4f}
+hr{border:0;border-top:1px solid #e2e1dc;margin:1.4em 0}
+/* The note type's own CSS (.card{padding:24px;font-size:20px;font-family:Segoe UI…}) is injected
+   after this block, so the overrides must be !important. They are written as body.card for the frame
+   itself (which keeps this file's font and padding) and .card:not(body) for nested elements, so the
+   note type's own font/padding rules never reach the outer body. */
+body.card{padding:38px 46px!important;max-width:none!important;font-family:"Source Han Serif SC", "Noto Serif CJK SC", "Noto Serif SC", "Songti SC", "STSong", "SimSun", serif!important;font-size:calc(18px + 1px)!important;line-height:1.85!important;background:transparent!important;color:inherit!important;text-align:left!important}
+.card:not(body){background:transparent!important;color:inherit!important;font:inherit!important;padding:0!important;max-width:none!important}
+.sa-answer{border-top:1px solid #e2e1dc!important;margin-top:22px;padding-top:20px}
+.sa-source{font-family:"Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif!important;font-size:12.5px!important;line-height:1.65!important;color:#7d7f82!important;margin-top:26px}
+img{max-width:100%;height:auto}
+a{pointer-events:none}
+.sa-q-label,.sa-a-label{font-family:"Segoe UI Variable Text", "Segoe UI", "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", system-ui, sans-serif;font-size:11.5px;letter-spacing:0.08em;color:#7d7f82;margin:0 0 10px}
+.sa-a-label{margin-top:22px}
+.sa-q{font-weight:600;font-size:1.06em;line-height:1.6;margin:0 0 1.4em;padding-bottom:1.1em;border-bottom:1px solid #e2e1dc}
+</style><style>.card {font-family:'Segoe UI','Microsoft YaHei',sans-serif;font-size:20px;line-height:1.7;text-align:left;color:#242424;background:#fff;padding:24px;max-width:760px;margin:auto} .sa-answer{border-top:1px solid #e7e7e7;margin-top:20px;padding-top:20px} .sa-source{font-size:12px;color:#888;margin-top:24px} img{max-width:100%;height:auto} .cloze{font-weight:bold}</style><body class="card"><p class="sa-q">为什么 <code>|x|</code> 在 0 处不可导，而它在 0 处却是连续的？</p><div class="sa-answer"><p>连续性只要求函数值<strong>没有跳跃</strong>，可导还要求左右两侧的<strong>变化率趋于同一个值</strong>。</p><ul><li>左右导数不相等，所以极限不存在；</li><li>函数值本身仍连成一片，所以连续。</li></ul><pre><code>f'(0⁻) = -1
+f'(0⁺) = +1</code></pre><table><tr><th>性质</th><th>要求</th></tr><tr><td>连续</td><td>极限等于函数值</td></tr></table></div><div class="sa-source">微积分入门 · 第 12 页<br>函数在一点可导，意味着左右两侧的变化率趋于同一个值。</div></body>

@@ -1,0 +1,4 @@
+依据 review.issues 修订候选解释，保持原文语境、正确部分和同一输出 schema。
+只使用现有证据，不编造审查所要求但当前没有的材料。需要新证据而无法获得时收窄结论并填写 unresolved；必要时设 status=limited。
+修订后同步 brief、正文、claims、例子、答案与回原文段落，避免只改一处造成自相矛盾。
+输出完整的新 ExplanationDraft JSON。

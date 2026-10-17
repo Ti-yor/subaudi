@@ -1,0 +1,23 @@
+识别当前选区与读者背景之间最可能的理解缺口，为后续解释提供计划。不要写完整讲义。
+
+先读上下文，保留量词与条件，检查材料识别是否可靠。根据片段内容选择知识与证据类型。
+从词义、符号、动机、前置、推理、证据、边界、结构关系中找真正影响本次理解的缺口。
+把前置分成必须先补、可就地解释、可选拓展。每一项说清它如何影响理解原句。
+“显然”“容易证明”“由此可知”可能提示跳步，但不能仅凭关键词认定原文有错。
+
+返回 JSON：
+{
+  "status": "ready | needs_evidence | needs_transcription | needs_clarification",
+  "discipline_route": "formal | empirical | interpretive | decision | practical | mixed",
+  "in_context_meaning": "选区在这里的含义",
+  "statement_type": "definition | convention | deduction | observation | interpretation | value | mixed",
+  "gaps": [{"kind": "term | notation | purpose | prerequisite | inference | evidence | boundary | structure", "question": "...", "priority": "blocking | useful | optional", "anchor_id": "..."}],
+  "prerequisites": [{"term": "...", "placement": "before | inline | optional", "why": "..."}],
+  "conditions_to_check": ["..."],
+  "evidence_requests": [{"question": "必须查清什么", "preferred_source_type": "...", "why_local_material_is_insufficient": "..."}],
+  "teaching_goal": "用户读后能完成什么",
+  "suggested_section_kinds": ["..."],
+  "clarification": null
+}
+
+若一个简短问题足以消除不可避免的歧义，clarification 填该问题，否则为 null。只有影响当前解释的缺口才导致 needs_evidence；不能因没有外部网页就拒绝一切基础解释。

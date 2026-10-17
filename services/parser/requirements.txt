@@ -1,0 +1,6 @@
+rapidocr-onnxruntime==1.2.3
+olefile==0.47
+onnxruntime==1.30.0
+pypdfium2==5.11.0
+Pillow==12.3.0
+pyinstaller==6.22.2

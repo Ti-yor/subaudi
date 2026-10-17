@@ -1,0 +1,111 @@
+{
+  "name": "subaudi",
+  "version": "0.2.0",
+  "private": true,
+  "type": "module",
+  "description": "Local-first textbook reader",
+  "author": "Subaudi",
+  "main": "dist/main.cjs",
+  "scripts": {
+    "setup:parser": "python -m pip install --target .tools/parser-runtime olefile==0.47",
+    "setup:anki": "python -m pip install --target .tools/anki-runtime -r services/anki/requirements.lock.txt",
+    "build:anki": "python scripts/build-anki.py",
+    "build:sidecars": "powershell -ExecutionPolicy Bypass -File scripts/build-sidecars.ps1",
+    "test:anki": "python tests/anki_service_test.py && python tests/pptx_parser_test.py && python tests/legacy_ppt_test.py",
+    "build": "node scripts/build.mjs",
+    "build:dev": "node scripts/build.mjs --dev",
+    "start": "node scripts/build.mjs --dev && node scripts/start.mjs",
+    "check": "tsc --noEmit",
+    "test": "tsx --test tests/*.test.ts",
+    "ui": "npm run build && node scripts/ui-smoke.mjs",
+    "pack": "npm run build && electron-builder --win dir",
+    "dist": "npm run build && electron-builder --win portable",
+    "release": "node scripts/release.mjs",
+    "licenses": "node scripts/licenses.mjs",
+    "check:publish": "node scripts/publish-check.mjs",
+    "probe": "tsx scripts/probe.ts"
+  },
+  "dependencies": {
+    "pdf-lib": "1.17.1",
+    "pdfjs-dist": "6.3.289",
+    "react": "19.1.1",
+    "react-dom": "19.1.1",
+    "react-markdown": "10.1.0",
+    "zod": "3.25.76"
+  },
+  "devDependencies": {
+    "@types/node": "24.5.2",
+    "@types/react": "19.1.13",
+    "@types/react-dom": "19.1.9",
+    "electron": "44.4.3",
+    "electron-builder": "26.0.12",
+    "esbuild": "0.25.10",
+    "playwright-core": "1.55.0",
+    "tsx": "4.20.5",
+    "typescript": "5.9.2"
+  },
+  "build": {
+    "appId": "local.subaudi.reader",
+    "productName": "Subaudi",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "dist/**/*",
+      "package.json",
+      "!node_modules/**/*"
+    ],
+    "extraResources": [
+      {
+        "from": "services/anki/dist/subaudi-anki",
+        "to": "anki",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "services/parser/dist",
+        "to": "parser",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "services/parser/ocr-dist/subaudi-ocr",
+        "to": "parser/ocr",
+        "filter": [
+          "**/*"
+        ]
+      },
+      {
+        "from": "services/anki/main.py",
+        "to": "anki-source/main.py"
+      },
+      {
+        "from": "services/anki/requirements.lock.txt",
+        "to": "anki-source/requirements.lock.txt"
+      },
+      {
+        "from": "third-party",
+        "to": "third-party",
+        "filter": [
+          "**/*",
+          "!**/*.py",
+          "!**/*.pyc"
+        ]
+      }
+    ],
+    "win": {
+      "target": "portable",
+      "signAndEditExecutable": false
+    },
+    "electronDist": "node_modules/electron/dist",
+    "electronLanguages": [
+      "zh-CN",
+      "en-US"
+    ],
+    "compression": "maximum",
+    "asar": true
+  },
+  "license": "AGPL-3.0-or-later"
+}

@@ -1,0 +1,36 @@
+# 文本文件在仓库中统一存为 LF，检出时按平台转换
+* text=auto
+
+# Windows 批处理与 PowerShell 必须是 CRLF：cmd.exe 在 LF 行尾下解析 goto/标签会出错
+*.bat text eol=crlf
+*.cmd text eol=crlf
+*.ps1 text eol=crlf
+
+# 源码与文档始终 LF（跨平台工具链、diff 稳定）
+*.ts   text eol=lf
+*.tsx  text eol=lf
+*.mjs  text eol=lf
+*.js   text eol=lf
+*.json text eol=lf
+*.css  text eol=lf
+*.md   text eol=lf
+*.py   text eol=lf
+*.txt  text eol=lf
+
+# 二进制：不做任何转换，也不做文本 diff
+*.png  binary
+*.jpg  binary
+*.ico  binary
+*.icns binary
+*.pdf  binary
+*.docx binary
+*.pptx binary
+*.ppt  binary
+*.gz   binary
+*.zip  binary
+*.wasm binary
+
+# 生成文件：在 GitHub 的 diff 与语言统计中折叠
+package-lock.json         linguist-generated=true
+third-party/THIRD-PARTY.md linguist-generated=true
+third-party/licenses/**   linguist-generated=true linguist-vendored=true

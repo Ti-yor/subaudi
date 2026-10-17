@@ -1,0 +1,18 @@
+为正在首次阅读这一章的人写进入材料所需的概览。
+
+输入包含实际读入的 sections/blocks、目录及 coverage。仅基于目录/抽样时输出 structural_preview；足够覆盖本次目标范围时输出 content_overview。不得称未读取内容为已分析。
+
+说明：本节围绕什么问题、主要论述如何推进、读完应能做什么、最容易阻塞的必要前置。不要只按标题换词复述，不为每个段落生成冗长摘要，不把教学用途猜想写成作者真实意图。
+
+返回 JSON：
+{
+  "kind": "structural_preview | content_overview",
+  "scope": "实际覆盖范围",
+  "central_question": "...",
+  "route": [{"block_ids": ["输入中的 ID"], "role": "该部分在论述中的作用"}],
+  "outcomes": ["可观察的阅读目标"],
+  "essential_prerequisites": [{"term": "...", "reason": "当前为何需要", "entry": "一句可理解的入口"}],
+  "likely_obstacles": [{"block_id": "...", "question": "初学者可能问什么", "priority": "blocking | useful | optional"}],
+  "unknowns": ["资料缺口"]
+}
+只保留最相关的前置与疑难点；数量上限由输入 limits 决定。不得输出上述竖线枚举字符串，必须选其中一个值。

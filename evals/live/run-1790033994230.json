@@ -1,0 +1,36 @@
+{
+  "results": [
+    {
+      "case": "K09",
+      "status": "failed",
+      "error": "主张位置不存在",
+      "calls": [
+        {
+          "task": "teach",
+          "usage": {
+            "prompt_tokens": 2426,
+            "completion_tokens": 1575,
+            "total_tokens": 4001,
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 1018,
+            "response_model": "deepseek-flash"
+          }
+        },
+        {
+          "task": "repair",
+          "usage": {
+            "prompt_tokens": 3187,
+            "completion_tokens": 1693,
+            "total_tokens": 4880,
+            "prompt_cache_hit_tokens": 512,
+            "prompt_cache_miss_tokens": 2675,
+            "response_model": "deepseek-flash"
+          }
+        }
+      ],
+      "elapsedMs": 14905
+    }
+  ],
+  "totalTokensOrReserved": 8881,
+  "realAPI": true
+}

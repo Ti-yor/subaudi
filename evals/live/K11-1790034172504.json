@@ -1,0 +1,659 @@
+{
+  "case": "K11",
+  "model": "deepseek-flash",
+  "pipeline": "2026-09-22.5",
+  "input": {
+    "language": "zh-CN",
+    "reader_profile": {
+      "declared_background": "会指数",
+      "goal": "独立读回原句、检查条件、完成变式"
+    },
+    "selection": {
+      "anchor_id": "K11",
+      "text": "OCR: e^(x²)，原图指数符号不确定。"
+    },
+    "context": {
+      "nearby_blocks": [
+        "OCR: e^(x²)，原图指数符号不确定。"
+      ],
+      "coverage": "当前原创测试段落",
+      "extraction_issues": [
+        "原图指数符号未确认"
+      ],
+      "parent_excerpt": null
+    },
+    "evidence": [
+      {
+        "source_id": "S1",
+        "excerpt": "OCR: e^(x²)，原图指数符号不确定。",
+        "title": "OCR负号",
+        "verification": "source_only"
+      }
+    ],
+    "capabilities": {
+      "web_search": false,
+      "vision": false
+    },
+    "limits": {
+      "max_sections": 4,
+      "max_checks": 1,
+      "max_followups": 3
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "limited",
+            "needs_clarification"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "brief": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000,
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "kind": {
+                "enum": [
+                  "meaning",
+                  "purpose",
+                  "prerequisite",
+                  "mechanism",
+                  "example",
+                  "boundary",
+                  "comparison"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "body_markdown": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "local_id",
+              "kind",
+              "title",
+              "body_markdown",
+              "evidence_ids"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 8
+        },
+        "return_to_source": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "appears_in": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+                },
+                "maxItems": 50,
+                "description": "Only brief, return_to_source, or exact sections.local_id. Never prefix section:."
+              },
+              "basis": {
+                "enum": [
+                  "source_statement",
+                  "derived",
+                  "background",
+                  "interpretation",
+                  "uncertain"
+                ]
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              },
+              "derivation_section_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "local_id",
+              "text",
+              "appears_in",
+              "basis",
+              "evidence_ids",
+              "derivation_section_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "followups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "term_or_phrase": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "section_id": {
+                "type": "string",
+                "maxLength": 16000,
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "why": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "term_or_phrase",
+              "section_id",
+              "why"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "micro_check": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "question": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "hint": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "answer": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "success_criteria": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "maxItems": 50
+            },
+            "remediation": {
+              "type": "string",
+              "maxLength": 16000
+            }
+          },
+          "required": [
+            "question",
+            "hint",
+            "answer",
+            "success_criteria",
+            "remediation"
+          ],
+          "additionalProperties": false
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "issue": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "effect_on_answer": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "next_step": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "issue",
+              "effect_on_answer",
+              "next_step"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "clarification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "title",
+        "brief",
+        "sections",
+        "return_to_source",
+        "claims",
+        "followups",
+        "micro_check",
+        "unresolved",
+        "clarification"
+      ],
+      "additionalProperties": false
+    },
+    "diagnosis": {
+      "status": "needs_transcription",
+      "discipline_route": "formal",
+      "in_context_meaning": "当前选区在原文中表示的应是一个以自然常数 e 为底的指数表达式；底数 e 可确认，但指数部分究竟是 x² 还是带负号的 -x²（或类似 e^{-x²}）尚未由原图确认。因此它可能是一个指数增长/衰减表达式、被积函数或密度核，具体代数对象和后续条件取决于指数符号。",
+      "statement_type": "mixed",
+      "gaps": [
+        {
+          "kind": "notation",
+          "question": "指数部分是 x² 还是 -x²（或括号范围不同的指数）？这决定函数是增长型还是衰减型、是否有界、积分是否收敛。",
+          "priority": "blocking",
+          "anchor_id": "K11"
+        },
+        {
+          "kind": "boundary",
+          "question": "原句中该表达式的定义域、变量范围以及是否处于求和/积分/极限语境是什么？",
+          "priority": "useful",
+          "anchor_id": "K11"
+        },
+        {
+          "kind": "structure",
+          "question": "该表达式在原段落中承担什么角色：函数定义、被积函数、概率密度核、级数项还是方程的一边？",
+          "priority": "useful",
+          "anchor_id": "K11"
+        }
+      ],
+      "prerequisites": [
+        {
+          "term": "自然常数 e",
+          "placement": "inline",
+          "why": "确认底数含义，才能把该式读作指数函数而非普通幂函数。"
+        },
+        {
+          "term": "指数符号与括号优先级",
+          "placement": "before",
+          "why": "e^x²、e^(x²)、e^{-x²} 在标准记法下可能产生不同解析；必须先固定指数范围。"
+        },
+        {
+          "term": "指数函数的增长/衰减与有界性",
+          "placement": "inline",
+          "why": "区分 x² 与 -x² 会导致函数走向无穷还是趋于 0，直接影响后续可积性和极限判断。"
+        }
+      ],
+      "conditions_to_check": [
+        "原图中指数位置是否存在负号或括号。",
+        "该表达式所在上下文是否限定 x 为实数、整数或复数。",
+        "原句是否隐含积分、求和、极限或不等式条件。"
+      ],
+      "evidence_requests": [
+        {
+          "question": "原图中 e 的指数部分实际写的是什么？",
+          "preferred_source_type": "原图或可核对的高清转录",
+          "why_local_material_is_insufficient": "OCR 结果只给出 e^(x²) 并明确标注指数符号不确定，未提供原图，无法判定是否漏掉负号或括号。"
+        }
+      ],
+      "teaching_goal": "读者能先锁定该表达式的确切指数形式，再据其判断函数类型、定义域、有界性与后续变式条件。",
+      "suggested_section_kinds": [
+        "转录确认",
+        "符号与含义",
+        "条件检查",
+        "变式入口"
+      ],
+      "clarification": "原图里 e 的指数是 x² 还是 -x²（或其他带括号的形式）？"
+    }
+  },
+  "draft": {
+    "status": "limited",
+    "title": "先锁定 e 的指数：x² 还是 -x²",
+    "brief": "当前选区只确认了“底数是 e、指数里含 x 的平方”，但 OCR 明确说指数符号不确定 [S1]。因此现在还不能把整个表达式当成某个确定的函数来求定义域、增减性或积分；必须先确认指数是 x² 还是 -x²（或别的带括号形式）。在确认之前，唯一可靠读法是：e 的某个含 x² 的指数。",
+    "sections": [
+      {
+        "local_id": "s_meaning",
+        "kind": "meaning",
+        "title": "这两个候选分别是什么意思",
+        "body_markdown": "把两种常见可能分开写清楚：\n\n- 若指数是 x²，即 e^(x²)：底数 e>0 固定，指数 x² 随 |x| 增大而增大，所以当 x→±∞ 时函数值 → +∞。它在 x=0 取最小值 e⁰=1，没有最大值。\n- 若指数是 -x²，即 e^(-x²)：指数是 x² 的相反数，当 |x| 增大时指数变负且绝对值变大，所以函数值趋于 0；在 x=0 取最大值 e⁰=1。\n\n注意这些结论用的是“指数函数的单调性”：e 的指数越大，e 的指数次方越大。因为 e≈2.718>1，这个方向成立。选区 [S1] 只给出 OCR 文本和“符号不确定”的标注，所以要把它当作待确认而不是已确定答案。",
+        "evidence_ids": [
+          "S1"
+        ]
+      },
+      {
+        "local_id": "s_check",
+        "kind": "boundary",
+        "title": "回到原句要检查什么",
+        "body_markdown": "在确认表达式前，先查三件事：\n\n1. 原图里指数位置有没有负号或括号？这决定是 e^(x²) 还是 e^(-x²)，也决定函数是增长型还是衰减型。\n2. x 的定义范围是什么？例如限定 x 为实数、整数或复数，会改变“是否有界”“能否积分”的答案。\n3. 它出现在什么句式里？是单独的函数定义，还是积分、求和、极限或密度核的一部分。这会影响后续需要的条件。\n\n目前 [S1] 只支持“指数含 x² 且符号未定”这一点。",
+        "evidence_ids": [
+          "S1"
+        ]
+      }
+    ],
+    "return_to_source": "回到原句时，先不要急着计算或画图。作者给出的可确认信息只有：底数是 e，指数含 x²，但指数符号未确认 [S1]。所以原句此刻应读作“以 e 为底、指数含 x² 的表达式（符号待定）”。确认指数符号后，再按上面的分支处理：x² 对应在 x→±∞ 时趋于无穷；-x² 对应趋于 0 并在 x=0 取最大值 1。",
+    "claims": [
+      {
+        "local_id": "c_symbol_uncertain",
+        "text": "选区只确认底数为 e、指数含 x²，但指数符号未由原图确认 [S1]。",
+        "appears_in": [
+          "brief",
+          "s_meaning",
+          "s_check",
+          "return_to_source"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c_growth",
+        "text": "若指数是 x²，则该表达式在 x→±∞ 时趋于 +∞，在 x=0 取最小值 1（实数范围）。",
+        "appears_in": [
+          "s_meaning",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": "s_meaning"
+      },
+      {
+        "local_id": "c_decay",
+        "text": "若指数是 -x²，则该表达式在 |x| 增大时趋于 0，在 x=0 取最大值 1（实数范围）。",
+        "appears_in": [
+          "s_meaning",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": "s_meaning"
+      }
+    ],
+    "followups": [
+      {
+        "term_or_phrase": "e 的指数放大或缩小会怎样改变函数图像",
+        "section_id": "s_meaning",
+        "why": "便于把两种候选的走向和取值区间统一起来检查。"
+      },
+      {
+        "term_or_phrase": "如何从原图或高清转录确认负号",
+        "section_id": "s_check",
+        "why": "这是解除当前阻塞的关键一步。"
+      }
+    ],
+    "micro_check": null,
+    "unresolved": [
+      {
+        "issue": "原图中指数符号究竟是 + 还是 -，或是否存在括号范围不同。",
+        "effect_on_answer": "无法确定函数是增长型还是衰减型，也无法进一步判断有界性与积分收敛性。",
+        "next_step": "查看原图或提供可核对的高清转录，确认指数位置是否有负号和括号。"
+      }
+    ],
+    "clarification": "原图里 e 的指数是 x² 还是 -x²（或其他带括号的形式）？"
+  },
+  "review": "模型审查通过；不代表事实或学习效果已验证",
+  "repaired": false,
+  "calls": [
+    {
+      "task": "diagnose",
+      "pipeline": "7319c19afd055ea39d0662a7d90fee2a77462ca7ac9f74919db7fdec09c8e54a",
+      "usage": {
+        "prompt_tokens": 1202,
+        "completion_tokens": 732,
+        "total_tokens": 1934,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 306,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "needs_transcription",
+        "discipline_route": "formal",
+        "in_context_meaning": "当前选区在原文中表示的应是一个以自然常数 e 为底的指数表达式；底数 e 可确认，但指数部分究竟是 x² 还是带负号的 -x²（或类似 e^{-x²}）尚未由原图确认。因此它可能是一个指数增长/衰减表达式、被积函数或密度核，具体代数对象和后续条件取决于指数符号。",
+        "statement_type": "mixed",
+        "gaps": [
+          {
+            "kind": "notation",
+            "question": "指数部分是 x² 还是 -x²（或括号范围不同的指数）？这决定函数是增长型还是衰减型、是否有界、积分是否收敛。",
+            "priority": "blocking",
+            "anchor_id": "K11"
+          },
+          {
+            "kind": "boundary",
+            "question": "原句中该表达式的定义域、变量范围以及是否处于求和/积分/极限语境是什么？",
+            "priority": "useful",
+            "anchor_id": "K11"
+          },
+          {
+            "kind": "structure",
+            "question": "该表达式在原段落中承担什么角色：函数定义、被积函数、概率密度核、级数项还是方程的一边？",
+            "priority": "useful",
+            "anchor_id": "K11"
+          }
+        ],
+        "prerequisites": [
+          {
+            "term": "自然常数 e",
+            "placement": "inline",
+            "why": "确认底数含义，才能把该式读作指数函数而非普通幂函数。"
+          },
+          {
+            "term": "指数符号与括号优先级",
+            "placement": "before",
+            "why": "e^x²、e^(x²)、e^{-x²} 在标准记法下可能产生不同解析；必须先固定指数范围。"
+          },
+          {
+            "term": "指数函数的增长/衰减与有界性",
+            "placement": "inline",
+            "why": "区分 x² 与 -x² 会导致函数走向无穷还是趋于 0，直接影响后续可积性和极限判断。"
+          }
+        ],
+        "conditions_to_check": [
+          "原图中指数位置是否存在负号或括号。",
+          "该表达式所在上下文是否限定 x 为实数、整数或复数。",
+          "原句是否隐含积分、求和、极限或不等式条件。"
+        ],
+        "evidence_requests": [
+          {
+            "question": "原图中 e 的指数部分实际写的是什么？",
+            "preferred_source_type": "原图或可核对的高清转录",
+            "why_local_material_is_insufficient": "OCR 结果只给出 e^(x²) 并明确标注指数符号不确定，未提供原图，无法判定是否漏掉负号或括号。"
+          }
+        ],
+        "teaching_goal": "读者能先锁定该表达式的确切指数形式，再据其判断函数类型、定义域、有界性与后续变式条件。",
+        "suggested_section_kinds": [
+          "转录确认",
+          "符号与含义",
+          "条件检查",
+          "变式入口"
+        ],
+        "clarification": "原图里 e 的指数是 x² 还是 -x²（或其他带括号的形式）？"
+      }
+    },
+    {
+      "task": "teach",
+      "pipeline": "78f32d2fa196fb653197b123b4473a6b27e845c3e6ecca553296d94b13807eb8",
+      "usage": {
+        "prompt_tokens": 3188,
+        "completion_tokens": 1227,
+        "total_tokens": 4415,
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 1780,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "limited",
+        "title": "先锁定 e 的指数：x² 还是 -x²",
+        "brief": "当前选区只确认了“底数是 e、指数里含 x 的平方”，但 OCR 明确说指数符号不确定 [S1]。因此现在还不能把整个表达式当成某个确定的函数来求定义域、增减性或积分；必须先确认指数是 x² 还是 -x²（或别的带括号形式）。在确认之前，唯一可靠读法是：e 的某个含 x² 的指数。",
+        "sections": [
+          {
+            "local_id": "s_meaning",
+            "kind": "meaning",
+            "title": "这两个候选分别是什么意思",
+            "body_markdown": "把两种常见可能分开写清楚：\n\n- 若指数是 x²，即 e^(x²)：底数 e>0 固定，指数 x² 随 |x| 增大而增大，所以当 x→±∞ 时函数值 → +∞。它在 x=0 取最小值 e⁰=1，没有最大值。\n- 若指数是 -x²，即 e^(-x²)：指数是 x² 的相反数，当 |x| 增大时指数变负且绝对值变大，所以函数值趋于 0；在 x=0 取最大值 e⁰=1。\n\n注意这些结论用的是“指数函数的单调性”：e 的指数越大，e 的指数次方越大。因为 e≈2.718>1，这个方向成立。选区 [S1] 只给出 OCR 文本和“符号不确定”的标注，所以要把它当作待确认而不是已确定答案。",
+            "evidence_ids": [
+              "S1"
+            ]
+          },
+          {
+            "local_id": "s_check",
+            "kind": "boundary",
+            "title": "回到原句要检查什么",
+            "body_markdown": "在确认表达式前，先查三件事：\n\n1. 原图里指数位置有没有负号或括号？这决定是 e^(x²) 还是 e^(-x²)，也决定函数是增长型还是衰减型。\n2. x 的定义范围是什么？例如限定 x 为实数、整数或复数，会改变“是否有界”“能否积分”的答案。\n3. 它出现在什么句式里？是单独的函数定义，还是积分、求和、极限或密度核的一部分。这会影响后续需要的条件。\n\n目前 [S1] 只支持“指数含 x² 且符号未定”这一点。",
+            "evidence_ids": [
+              "S1"
+            ]
+          }
+        ],
+        "return_to_source": "回到原句时，先不要急着计算或画图。作者给出的可确认信息只有：底数是 e，指数含 x²，但指数符号未确认 [S1]。所以原句此刻应读作“以 e 为底、指数含 x² 的表达式（符号待定）”。确认指数符号后，再按上面的分支处理：x² 对应在 x→±∞ 时趋于无穷；-x² 对应趋于 0 并在 x=0 取最大值 1。",
+        "claims": [
+          {
+            "local_id": "c_symbol_uncertain",
+            "text": "选区只确认底数为 e、指数含 x²，但指数符号未由原图确认 [S1]。",
+            "appears_in": [
+              "brief",
+              "s_meaning",
+              "s_check",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c_growth",
+            "text": "若指数是 x²，则该表达式在 x→±∞ 时趋于 +∞，在 x=0 取最小值 1（实数范围）。",
+            "appears_in": [
+              "s_meaning",
+              "return_to_source"
+            ],
+            "basis": "derived",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": "s_meaning"
+          },
+          {
+            "local_id": "c_decay",
+            "text": "若指数是 -x²，则该表达式在 |x| 增大时趋于 0，在 x=0 取最大值 1（实数范围）。",
+            "appears_in": [
+              "s_meaning",
+              "return_to_source"
+            ],
+            "basis": "derived",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": "s_meaning"
+          }
+        ],
+        "followups": [
+          {
+            "term_or_phrase": "e 的指数放大或缩小会怎样改变函数图像",
+            "section_id": "s_meaning",
+            "why": "便于把两种候选的走向和取值区间统一起来检查。"
+          },
+          {
+            "term_or_phrase": "如何从原图或高清转录确认负号",
+            "section_id": "s_check",
+            "why": "这是解除当前阻塞的关键一步。"
+          }
+        ],
+        "micro_check": null,
+        "unresolved": [
+          {
+            "issue": "原图中指数符号究竟是 + 还是 -，或是否存在括号范围不同。",
+            "effect_on_answer": "无法确定函数是增长型还是衰减型，也无法进一步判断有界性与积分收敛性。",
+            "next_step": "查看原图或提供可核对的高清转录，确认指数位置是否有负号和括号。"
+          }
+        ],
+        "clarification": "原图里 e 的指数是 x² 还是 -x²（或其他带括号的形式）？"
+      }
+    },
+    {
+      "task": "review",
+      "pipeline": "000f848553d207d31874fad081eed1e6a9f3e9480fa228b20aed09dd78fe99a3",
+      "usage": {
+        "prompt_tokens": 2841,
+        "completion_tokens": 306,
+        "total_tokens": 3147,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 2073,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "verdict": "pass",
+        "issues": [
+          {
+            "severity": "minor",
+            "location": "c_growth / c_decay",
+            "problem": "两条派生结论的 evidence_ids 都指向 S1（仅标明原图指数符号未确认的 OCR 片段），而 S1 并不包含 x² 或 -x² 函数的单调性、极值或极限信息。引用编号被误当作结论正确性的背书，违反“引用必须支持主张”的规则。",
+            "evidence_ids": [
+              "S1"
+            ],
+            "required_change": "将 c_growth、c_decay 的 evidence_ids 置空，并在 derivation_section_id 明确指向 s_meaning，说明这是基于 e>1 的指数单调性所作的假设性推导；不要用 S1 支撑该数学结论。"
+          }
+        ],
+        "unverified": [
+          "原图中 e 的指数符号（是否带负号、括号范围）无法核验，缺少原图或可核对的高清转录。",
+          "原句所处的上下文（定义域、变量范围、是否为积分/求和/密度核等）在证据中未提供，无法核实其角色与后续条件。",
+          "候选解释中 e≈2.718>1、指数单调性等一般数学背景在本次证据中未见对应来源，仅可视为学科常识而非本材料已核实内容。"
+        ]
+      }
+    }
+  ],
+  "elapsedMs": 11789,
+  "status": "contract_pass",
+  "human_review": null,
+  "learner_trial": null,
+  "date": "2026-09-21T23:43:04.294Z"
+}

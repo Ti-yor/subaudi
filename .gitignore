@@ -1,0 +1,69 @@
+# ---------------------------------------------------------------------------
+# 依赖与构建产物（可由 npm ci / npm run release 重新生成）
+# ---------------------------------------------------------------------------
+node_modules/
+dist/
+release/
+build/
+.tools/
+.npm-cache/
+services/*/dist/
+services/*/build/
+services/parser/ocr-dist/
+services/parser/build-*/
+services/parser/ocr-build*/
+*.spec
+__pycache__/
+*.py[cod]
+test-results/
+*.log
+*.tsbuildinfo
+
+# ---------------------------------------------------------------------------
+# 密钥与个人数据——任何情况下都不得提交
+# ---------------------------------------------------------------------------
+# API Key（Subaudi 把它加密存为 credential*.bin）、环境变量、证书
+*.bin
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+*.pfx
+*.p12
+# 本地数据库（资料全文、批注、解释、用量）
+*.sqlite
+*.sqlite-*
+*.db
+# Anki 卡片库与牌组（含个人复习记录）
+*.anki2
+*.anki21
+*.apkg
+*.colpkg
+collection.media/
+# 真实模型评测的原始输出（可能含付费 API 的完整请求）
+evals/real-*.json
+
+# ---------------------------------------------------------------------------
+# 教材与私人资料：只允许 fixtures/ 中的原创示例
+# ---------------------------------------------------------------------------
+/*.pdf
+/*.docx
+/*.doc
+/*.pptx
+/*.ppt
+/*.epub
+private/
+books/
+textbooks/
+
+# ---------------------------------------------------------------------------
+# 编辑器与系统文件
+# ---------------------------------------------------------------------------
+.DS_Store
+Thumbs.db
+desktop.ini
+.vscode/*
+!.vscode/extensions.json
+.idea/
+*.swp

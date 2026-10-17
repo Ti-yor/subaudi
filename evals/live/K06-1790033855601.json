@@ -1,0 +1,271 @@
+{
+  "case": "K06",
+  "status": "failed",
+  "error": "[\n  {\n    \"code\": \"invalid_type\",\n    \"expected\": \"array\",\n    \"received\": \"undefined\",\n    \"path\": [\n      \"unverified\"\n    ],\n    \"message\": \"Required\"\n  }\n]",
+  "calls": [
+    {
+      "task": "diagnose",
+      "pipeline": "7319c19afd055ea39d0662a7d90fee2a77462ca7ac9f74919db7fdec09c8e54a",
+      "usage": {
+        "prompt_tokens": 1176,
+        "completion_tokens": 590,
+        "total_tokens": 1766,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 280,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "ready",
+        "discipline_route": "empirical",
+        "in_context_meaning": "在统计学/因果推断语境中，这句话陈述一个总体层面的观察性经验命题：冰淇淋销量（X）与溺水事故数（Y）之间存在正相关（此处未说明正负，按常识为“同向变化”）。它只是关于两个变量统计上共同变动的断言，并未主张冰淇淋销量增加会导致溺水事故增加。",
+        "statement_type": "observation",
+        "gaps": [
+          {
+            "kind": "term",
+            "question": "“相关”在这里指统计相关（变量共同变动），还是指因果关联？",
+            "priority": "blocking",
+            "anchor_id": "K06"
+          },
+          {
+            "kind": "inference",
+            "question": "为什么两个变量相关却未必有因果？原句没有给出推理，读者需要能自行补充。",
+            "priority": "blocking",
+            "anchor_id": "K06"
+          },
+          {
+            "kind": "boundary",
+            "question": "这个结论适用于哪个总体、什么时间段、什么统计单位（销量总量、人均、事故数）？",
+            "priority": "useful",
+            "anchor_id": "K06"
+          },
+          {
+            "kind": "purpose",
+            "question": "引入这个例子是为了说明什么（如相关≠因果、混杂变量）？",
+            "priority": "useful",
+            "anchor_id": "K06"
+          }
+        ],
+        "prerequisites": [
+          {
+            "term": "相关（correlation）",
+            "placement": "before",
+            "why": "不理解“相关”是变量间的统计共变，就会把它读成因果，从而误解整句断言的范围。"
+          },
+          {
+            "term": "混杂变量（confounder）",
+            "placement": "inline",
+            "why": "这是解释“相关却非因果”的核心机制；本句的典型混杂因子是季节/气温，它同时抬高冰淇淋销量和游泳溺水数。"
+          },
+          {
+            "term": "第三变量与因果混淆",
+            "placement": "optional",
+            "why": "若读者要继续做变式（如构造反例或设计控制），需要更系统的因果图/控制变量概念。"
+          }
+        ],
+        "conditions_to_check": [
+          "确认“相关”是统计意义的共变，而非因果，且方向（正/负）在原句中未被明确给出。",
+          "确认该断言适用的参照总体与时间窗口，避免把特定情境的相关误当普遍规律。"
+        ],
+        "evidence_requests": [
+          {
+            "question": "该相关是否来自真实数据、具体相关系数多大？",
+            "preferred_source_type": "统计学教材或实证研究原始数据",
+            "why_local_material_is_insufficient": "本地仅有原句，未提供样本、系数或来源，无法核实强度与可靠性。"
+          }
+        ],
+        "teaching_goal": "读者能用自己的话说明：本句只是一个观察性相关断言，不蕴含因果；并能指出季节/气温这类混杂变量如何同时影响两者，从而解释“相关≠因果”。",
+        "suggested_section_kinds": [
+          "词义澄清：相关≠因果",
+          "机制说明：混杂变量（季节/气温）",
+          "边界与适用条件",
+          "可做的变式检查"
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "task": "teach",
+      "pipeline": "8fcdb76ecc89e64dae31a5cf9ae15b718dc7579798bb369d98f833db7cf6af12",
+      "usage": {
+        "prompt_tokens": 3009,
+        "completion_tokens": 2161,
+        "total_tokens": 5170,
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 1601,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "complete",
+        "title": "“冰淇淋销量与溺水事故相关”该怎么读：相关不等于因果",
+        "brief": "这句话是一个统计相关断言：冰淇淋销量和溺水事故数在同一时间段里同向变动（此处默认是正相关）。它没有说“吃冰淇淋导致溺水”或“卖冰淇淋造成溺水”。两个变量一起变动，可能只是因为第三个变量——例如气温/季节——同时把两者推高了。",
+        "sections": [
+          {
+            "local_id": "sec_meaning",
+            "kind": "meaning",
+            "title": "“相关”在这里只是统计共变",
+            "body_markdown": "原句说的是：观测到的冰淇淋销量 X 与溺水事故数 Y 之间存在相关 [S1]。\n\n“相关”在统计学里先指一个很窄的意思：这两列数据不是各走各的，而是一起变动。例如某地按天记录，天气热的日子里冰淇淋卖得多，溺水事故也多；天气冷的日子两者都少。这种“同向变动”叫正相关。\n\n它没有承诺三件更重的事：\n- 没说 X 引起 Y；\n- 没说 Y 引起 X；\n- 也没说没有第三个变量同时影响两者。\n\n所以读到“相关”时，先把结论严格限制在“观测数据里两者共同变动”这一层。\n\n另外，原句没有明确说是正相关还是负相关，也没有给相关系数大小。要回到原文时，把它当作一个方向未写明的相关断言即可。",
+            "evidence_ids": [
+              "S1"
+            ]
+          },
+          {
+            "local_id": "sec_mechanism",
+            "kind": "mechanism",
+            "title": "为什么两件事一起变，却不代表一件导致另一件",
+            "body_markdown": "用一个最省事的机制来理解：假设某地夏天热，冬天冷。\n\n- 热天大家买冰淇淋 → 冰淇淋销量高；\n- 热天大家去游泳 → 溺水事故多。\n\n这样冰淇淋销量和溺水事故就会同向变动，但推高两者的其实是“气温/季节”。这种同时影响 X 和 Y 的变量叫混杂变量。\n\n这就是“相关≠因果”的常见来源：观察到的共变，可能是一根共同的线牵着两个结果，而不是 X 直接拽动 Y。\n\n要检查一句相关断言是否像因果，可以问三个问题：\n1. 数据是观测来的，还是随机分配 X 的？\n2. 有没有某个变量先于 X 和 Y 变化，并且对两者都有影响？\n3. 如果按住该变量不变（例如只在气温相近的日子里比较），相关还稳定存在吗？\n\n这三个问题不需要高等数学，但能防止把统计共变直接升级成因果故事。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "sec_boundary",
+            "kind": "boundary",
+            "title": "这个断言在什么范围内成立，原句没说什么",
+            "body_markdown": "原句只给出了一句相关陈述 [S1]，它本身没有交代：\n\n- 参照总体：是某个城市、全国，还是全球？\n- 时间窗口：是某一年、夏季，还是全年？\n- 统计单位：冰淇淋销量是总销售额、人均消费量，还是某品牌销量？溺水事故是人数、次数，还是每十万人的发生率？\n- 相关方向与强度：正相关还是负相关？强还是弱？\n\n这些不是吹毛求疵。换一个总体或时间窗口，相关可能消失、反转，甚至变成由反向关系主导。例如只在冬季比较，冰淇淋销量和溺水事故可能都很低，相关会变得很不稳定。\n\n因此，独立读回原句时，先把它的适用范围限定为“在某个未说明的观测数据集中，这两个变量共同变动”。要把它推广成普遍规律，需要原文提供更多条件，而当前材料没有。",
+            "evidence_ids": [
+              "S1"
+            ]
+          },
+          {
+            "local_id": "sec_check",
+            "kind": "example",
+            "title": "做一次变式：把混杂变量按住会怎样",
+            "body_markdown": "假设某旅游城市连续 100 天记录：\n- X = 当天冰淇淋销量；\n- Y = 当天记录的溺水事故数；\n- Z = 当天最高气温。\n\n直接看 X 和 Y，发现同向变动。现在只在气温相近的日子内部比较，比如把所有“最高气温 30–32°C”的日子挑出来，再看 X 和 Y 是否还稳定同向。\n\n如果在这个子集里相关明显减弱甚至消失，那么原来的相关很可能主要由气温/季节驱动；如果按住气温后相关仍然稳定存在，那也不能立刻说因果，还需要排除其他混杂变量和反向因果，但至少说明气温不是唯一解释。\n\n这个变式的作用是：把“相关”这句话变成一个可检查的问题——换条件、按住第三变量、看相关是否还站得住。",
+            "evidence_ids": []
+          }
+        ],
+        "return_to_source": "回到原句“冰淇淋销量与溺水事故相关”[S1]，它现在应该这样理解：这是一个统计相关断言，说的是两个变量在某个未说明的观测数据集里共同变动；它没有说谁引起谁，也没有给出方向、强度、总体和时间范围。作者省略的是“相关”的统计限定、第三变量（如气温/季节）的作用，以及因果判断所需的额外条件。你可以保留原句，但读到“相关”时不要自行升级为“冰淇淋导致溺水”。在存在共同混杂变量的条件下，这种相关可以成立，同时因果主张仍然不成立。",
+        "claims": [
+          {
+            "local_id": "c1",
+            "text": "原句陈述的是冰淇淋销量与溺水事故之间的统计相关，没有主张因果。",
+            "appears_in": [
+              "brief",
+              "sec_meaning",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c2",
+            "text": "相关可以指两个变量共同变动；同向变动是正相关，反向变动是负相关。",
+            "appears_in": [
+              "sec_meaning"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c3",
+            "text": "气温/季节可以作为混杂变量，同时影响冰淇淋销量和溺水事故，从而使两者出现相关但非因果的关系。",
+            "appears_in": [
+              "sec_mechanism",
+              "brief"
+            ],
+            "basis": "interpretation",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c4",
+            "text": "原句没有交代参照总体、时间窗口、统计单位以及相关方向与强度。",
+            "appears_in": [
+              "sec_boundary",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c5",
+            "text": "按住气温等混杂变量后，原相关可能减弱或消失；这只说明气温可能是部分解释，不能仅凭稳住一个变量就证明因果。",
+            "appears_in": [
+              "sec_check"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_check"
+          }
+        ],
+        "followups": [
+          {
+            "term_or_phrase": "混杂变量",
+            "section_id": "sec_mechanism",
+            "why": "如果你要自己构造反例或检查其他相关断言，需要知道混杂变量是什么、怎样识别它。"
+          },
+          {
+            "term_or_phrase": "按住 Z 看相关是否稳定",
+            "section_id": "sec_check",
+            "why": "这是从“读到相关”走到“检查因果可能”的最小可执行动作，适合用来做更多变式。"
+          },
+          {
+            "term_or_phrase": "观测数据 vs 随机分配",
+            "section_id": "sec_boundary",
+            "why": "决定一句话能不能直接支持因果结论的关键区别，原句没有展开但后续阅读常会遇到。"
+          }
+        ],
+        "micro_check": {
+          "question": "新情境：某研究发现“泳池门票销量与中暑人数相关”。请说明这句话是否已经证明“买泳池门票导致中暑”，并给出一个可能的混杂变量。",
+          "hint": "先问：票销量和中暑人数是否只是共同变动？还有没有第三个变量同时影响两者？",
+          "answer": "没有证明。原句只能说明两者相关（共同变动），不能推出因果。可能的混杂变量是气温/季节：热天既使更多人买泳池门票，也使中暑人数增加。",
+          "success_criteria": [
+            "明确说出“相关不等于因果”",
+            "指出一个同时影响两者的第三变量（如气温/季节）",
+            "不把相关断言直接升级为因果结论"
+          ],
+          "remediation": "如果卡住，回看“为什么两件事一起变，却不代表一件导致另一件”一节，重点抓“共同原因”这四个字。"
+        },
+        "unresolved": [
+          {
+            "issue": "原句没有提供真实数据、相关系数大小、样本量或来源。",
+            "effect_on_answer": "无法判断这个相关在实际数据中强度如何、是否显著，也无法核实它是否来自可靠观测。",
+            "next_step": "如果需要严肃使用这句话，应查找其原始数据来源或教材上下文，确认样本、时间范围和统计方法。"
+          }
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "task": "review",
+      "pipeline": "a7942f27ac6ce4bcc044e078afbb595fe16d178c54934239356088a61099a056",
+      "usage": {
+        "prompt_tokens": 3603,
+        "completion_tokens": 258,
+        "total_tokens": 3861,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 2835,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "verdict": "pass",
+        "issues": [
+          {
+            "severity": "minor",
+            "location": "sec_boundary",
+            "problem": "边界一节把“原句没有交代统计单位”列为缺口。但原句明确用了“销量”和“溺水事故”两个词，已限定为销量类指标和事故类指标，只是粒度（总量/人均/发生率）未说明。当前的表述会让人误以为原句连变量类型都没给出，属于对原句省略范围的轻微扩大。",
+            "evidence_ids": [
+              "S1"
+            ],
+            "required_change": "把“统计单位”改为“统计粒度”：冰淇淋销量是总量、人均还是某品牌，溺水事故是人数、次数还是发生率；保留“原句已给出变量类型（销量、事故）”的说明。"
+          },
+          {
+            "severity": "minor",
+            "location": "sec_check",
+            "problem": "示例构造了“每天冰淇淋销量、每天溺水事故数、当天最高气温”的 100 天数据，并在子集内比较。开头没有声明这是为教学而编造的假想数据，读者可能误以为这是真实研究记录。",
+            "evidence_ids": [],
+            "required_change": "在示例开头加一句“以下是为检查相关是否由气温驱动而临时编造的数据情境，并非真实统计研究”。"
+          }
+        ]
+      }
+    }
+  ],
+  "elapsedMs": 16811,
+  "human_review": null,
+  "date": "2026-09-21T23:38:15.309Z"
+}

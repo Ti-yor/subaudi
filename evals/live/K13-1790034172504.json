@@ -1,0 +1,922 @@
+{
+  "case": "K13",
+  "model": "deepseek-flash",
+  "pipeline": "2026-09-22.5",
+  "input": {
+    "language": "zh-CN",
+    "reader_profile": {
+      "declared_background": "学过期望",
+      "goal": "独立读回原句、检查条件、完成变式"
+    },
+    "selection": {
+      "anchor_id": "K13",
+      "text": "父解释：零协方差一定独立。"
+    },
+    "context": {
+      "nearby_blocks": [
+        "父解释：零协方差一定独立。"
+      ],
+      "coverage": "当前原创测试段落",
+      "extraction_issues": [],
+      "parent_excerpt": "父解释：零协方差一定独立。"
+    },
+    "evidence": [
+      {
+        "source_id": "S1",
+        "excerpt": "父解释：零协方差一定独立。",
+        "title": "错误父解释",
+        "verification": "source_only"
+      }
+    ],
+    "capabilities": {
+      "web_search": false,
+      "vision": false
+    },
+    "limits": {
+      "max_sections": 4,
+      "max_checks": 1,
+      "max_followups": 3
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "limited",
+            "needs_clarification"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "brief": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000,
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "kind": {
+                "enum": [
+                  "meaning",
+                  "purpose",
+                  "prerequisite",
+                  "mechanism",
+                  "example",
+                  "boundary",
+                  "comparison"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "body_markdown": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "local_id",
+              "kind",
+              "title",
+              "body_markdown",
+              "evidence_ids"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 8
+        },
+        "return_to_source": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "appears_in": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000,
+                  "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+                },
+                "maxItems": 50,
+                "description": "Only brief, return_to_source, or exact sections.local_id. Never prefix section:."
+              },
+              "basis": {
+                "enum": [
+                  "source_statement",
+                  "derived",
+                  "background",
+                  "interpretation",
+                  "uncertain"
+                ]
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              },
+              "derivation_section_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "local_id",
+              "text",
+              "appears_in",
+              "basis",
+              "evidence_ids",
+              "derivation_section_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "followups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "term_or_phrase": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "section_id": {
+                "type": "string",
+                "maxLength": 16000,
+                "pattern": "^[A-Za-z][A-Za-z0-9_-]{0,63}$"
+              },
+              "why": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "term_or_phrase",
+              "section_id",
+              "why"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "micro_check": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "question": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "hint": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "answer": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "success_criteria": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "maxItems": 50
+            },
+            "remediation": {
+              "type": "string",
+              "maxLength": 16000
+            }
+          },
+          "required": [
+            "question",
+            "hint",
+            "answer",
+            "success_criteria",
+            "remediation"
+          ],
+          "additionalProperties": false
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "issue": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "effect_on_answer": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "next_step": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "issue",
+              "effect_on_answer",
+              "next_step"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "clarification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "title",
+        "brief",
+        "sections",
+        "return_to_source",
+        "claims",
+        "followups",
+        "micro_check",
+        "unresolved",
+        "clarification"
+      ],
+      "additionalProperties": false
+    },
+    "diagnosis": {
+      "status": "ready",
+      "discipline_route": "formal",
+      "in_context_meaning": "这是上一级解释模块给出的断言：若两个随机变量协方差为零，则它们相互独立。该断言在一般情形下不成立，零协方差只排除线性相关，不能推出独立；只有在线性相关即独立的特殊情形（如二维联合正态）或另有附加条件下才成立。",
+      "statement_type": "deduction",
+      "gaps": [
+        {
+          "kind": "term",
+          "question": "这里的“独立”是按概率论定义（联合分布等于边缘分布之积）还是被误当成“无线性相关”？",
+          "priority": "blocking",
+          "anchor_id": "K13"
+        },
+        {
+          "kind": "inference",
+          "question": "从 Cov(X,Y)=0 到 X⊥Y 的推理步骤是什么？是否存在把“不相关”等同于“独立”的跳步？",
+          "priority": "blocking",
+          "anchor_id": "K13"
+        },
+        {
+          "kind": "boundary",
+          "question": "原断言在什么条件下才成立（例如联合正态、二值变量、或已知特定分布族）？",
+          "priority": "blocking",
+          "anchor_id": "K13"
+        },
+        {
+          "kind": "prerequisite",
+          "question": "是否已区分“协方差为零（不相关）”与“独立”这两个层次不同的概念？",
+          "priority": "useful",
+          "anchor_id": "K13"
+        }
+      ],
+      "prerequisites": [
+        {
+          "term": "协方差",
+          "placement": "before",
+          "why": "需先明确 Cov(X,Y)=E[(X−EX)(Y−EY)] 只度量线性关联的方向与强度。"
+        },
+        {
+          "term": "随机变量独立",
+          "placement": "before",
+          "why": "需知道独立要求所有联合概率/分布信息满足乘积关系，比零协方差强得多。"
+        },
+        {
+          "term": "不相关",
+          "placement": "inline",
+          "why": "用来标注零协方差的准确名称，避免与独立混同。"
+        },
+        {
+          "term": "线性相关与非线性依赖",
+          "placement": "inline",
+          "why": "解释为何存在协方差为零但明显相互依赖的变量，例如对称分布中的平方关系。"
+        }
+      ],
+      "conditions_to_check": [
+        "原断言是否被限定在某个特定分布族或变量类型内；若没有限定，则作为普遍结论为假。",
+        "是否把‘零协方差’写成了‘不相关’，以及是否把‘不相关’误读为‘独立’。",
+        "要检验反例，需同时给出联合分布、边缘分布、协方差计算和独立性检验，而不仅是一个点估计。"
+      ],
+      "evidence_requests": [
+        {
+          "question": "父解释是否还有未显示的上下文或附加条件（例如‘在二维正态下’），使该断言仅在特定条件下成立？",
+          "preferred_source_type": "原文相邻段落或父解释完整内容",
+          "why_local_material_is_insufficient": "当前 evidence 只有这一句，无法判断它是无条件断言还是被截断的条件结论。"
+        }
+      ],
+      "teaching_goal": "读者能复述“零协方差只意味着不相关，不等于独立”，能判断原断言是否需要附加条件，并能构造或检查一个零协方差但不独立的简单反例。",
+      "suggested_section_kinds": [
+        "概念辨析",
+        "必要条件与反例",
+        "成立条件说明"
+      ],
+      "clarification": null
+    }
+  },
+  "draft": {
+    "status": "limited",
+    "title": "“零协方差一定独立”这句话错在哪里",
+    "brief": "这句作为一般性命题是假的。协方差为零只说明两个随机变量没有线性关联（称为“不相关”），而独立要求联合分布完全等于各自边缘分布的乘积，是更强且更细的条件。所以 Cov(X,Y)=0 不能推出 X 与 Y 独立；只有在额外条件（例如联合正态）下才能反推。下面先辨析概念，再给出一个可直接手算的反例，最后说明该断言在什么条件下才成立。",
+    "sections": [
+      {
+        "local_id": "s1",
+        "kind": "meaning",
+        "title": "两个词各自的确切含义",
+        "body_markdown": "先把两个概念分开。以下两条是概率论中的一般背景定义，不是来自父解释。\n\n**协方差为零（不相关）**：Cov(X,Y) = E[(X−EX)(Y−EY)] = 0。它只看乘积偏差的平均值是否为 0，也就是只探测“线性关联”。\n\n**独立**：对任意可取的事件 A、B，都有 P(X∈A, Y∈B) = P(X∈A)·P(Y∈B)。等价地，联合分布等于两个边缘分布的乘积。这是关于**整个分布**的条件，比只看一个数字（协方差）强得多。\n\n所以“不相关”和“独立”不在同一个层次：不相关只约束一个二阶矩，独立约束全部概率信息。父解释那句“零协方差一定独立”[S1]正是把这两层混为一谈、直接跳步。",
+        "evidence_ids": [
+          "S1"
+        ]
+      },
+      {
+        "local_id": "s2",
+        "kind": "example",
+        "title": "一个协方差为零但不独立的例子",
+        "body_markdown": "设 X 等概率取值 −1、0、1（各概率 1/3），令 Y = X²。\n\n**算协方差**：EX = (−1+0+1)/3 = 0；E(XY) = E(X³) = (−1+0+1)/3 = 0；EY = E(X²) = (1+0+1)/3 = 2/3。\nCov(X,Y) = E(XY) − EX·EY = 0 − 0·(2/3) = 0。协方差为零。\n\n**检验独立**：取事件 {X=0} 与 {Y=0}。因为 Y=X²，Y=0 当且仅当 X=0，所以 P(X=0, Y=0) = P(X=0) = 1/3。而 P(X=0)·P(Y=0) = (1/3)·(1/3) = 1/9。1/3 ≠ 1/9，乘积条件不成立，故 X 与 Y **不独立**。\n\n结论：这个例子中协方差为 0 却存在明显的依赖关系（知道 X 就完全知道 Y），直接反驳“零协方差一定独立”。依赖是**非线性**的（Y 是 X 的平方），而协方差只对线性关系敏感，所以“看不见”它。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "s3",
+        "kind": "boundary",
+        "title": "它在什么条件下才成立",
+        "body_markdown": "一般情形下，正确方向是“独立 ⇒ 不相关（零协方差）”（前提是二阶矩有限），反过来不成立。\n\n但存在一类重要特例使反推成立：若 (X,Y) 服从**联合正态分布**，则 Cov(X,Y)=0 确实等价于 X 与 Y 独立。原因是联合正态完全由均值、方差、协方差这五个参数决定，协方差为 0 时联合密度恰好分解成两个边缘正态密度的乘积。\n\n所以判断原断言[S1]时，要看它是否被限定在特定分布族（如联合正态）内。若没有给出这种限定，它作为普遍结论就是假的。",
+        "evidence_ids": [
+          "S1"
+        ]
+      }
+    ],
+    "return_to_source": "父解释的那句“零协方差一定独立”[S1]是一条**无条件**的一般断言，而它在一般情况下不成立。你可以这样修正理解：零协方差只等于“不相关”，即没有线性关联；独立还要联合分布整体等于边缘分布之积。二者之间隔着一个“联合分布是否为正态之类的特殊结构”的条件。只有当额外限定（例如联合正态）被明确写出时，才能从零协方差推回独立。回到原句时，请先找它的条件从句；找不到，就应把它当作错误命题，并用 Y=X² 的反例替代。",
+    "claims": [
+      {
+        "local_id": "c1",
+        "text": "父解释断言“零协方差一定独立”，是一条一般性命题。",
+        "appears_in": [
+          "brief",
+          "s1",
+          "s3",
+          "return_to_source"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c2",
+        "text": "该断言作为普遍命题为假：协方差为零只意味着不相关，不等于独立。",
+        "appears_in": [
+          "brief",
+          "s1",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "s2"
+      },
+      {
+        "local_id": "c3",
+        "text": "独立要求联合分布等于边缘分布之积，是比零协方差更强的条件。",
+        "appears_in": [
+          "brief",
+          "s1"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c4",
+        "text": "Y=X² 且 X 在 {−1,0,1} 上等概率取值时，Cov(X,Y)=0 但 X 与 Y 不独立。",
+        "appears_in": [
+          "brief",
+          "s2"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "s2"
+      },
+      {
+        "local_id": "c5",
+        "text": "在联合正态分布下，零协方差确实等价于独立，这是原断言能成立的特殊条件。",
+        "appears_in": [
+          "brief",
+          "s3",
+          "return_to_source"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": null
+      }
+    ],
+    "followups": [
+      {
+        "term_or_phrase": "联合正态分布",
+        "section_id": "s3",
+        "why": "想知道“为什么正态下零协方差就能推出独立”，需要知道联合正态密度的参数结构。"
+      },
+      {
+        "term_or_phrase": "二阶矩有限",
+        "section_id": "s3",
+        "why": "协方差和“独立⇒不相关”的推导都依赖 EX²、EY² 存在，需要弄清这个技术前提。"
+      },
+      {
+        "term_or_phrase": "线性相关与非线性依赖",
+        "section_id": "s2",
+        "why": "想更系统地理解协方差为何只探测线性关系、常见非线性依赖有哪些。"
+      }
+    ],
+    "micro_check": {
+      "question": "设 X 等概率取值 −1、0、1，令 Y=X²。请判断 Cov(X,Y) 是否为 0，以及 X、Y 是否独立，并给出判断依据。",
+      "hint": "先算 EX、E(XY)，再取事件 {X=0} 与 {Y=0} 检验乘积条件。",
+      "answer": "EX = (−1+0+1)/3 = 0；E(XY) = E(X³) = (−1+0+1)/3 = 0；EY = E(X²) = (1+0+1)/3 = 2/3。所以 Cov(X,Y) = E(XY) − EX·EY = 0 − 0·(2/3) = 0。\n检验独立：P(X=0,Y=0) = P(X=0) = 1/3（因为 Y=X² 且 X 只有 0 时 Y=0 才发生，非零时 Y=1 或 1），而 P(X=0)·P(Y=0) = (1/3)·(1/3) = 1/9 ≠ 1/3。乘积条件不成立，故 X 与 Y 不独立。\n这说明零协方差并不推出独立。",
+      "success_criteria": [
+        "能正确算出 Cov(X,Y)=0",
+        "能用事件 {X=0} 与 {Y=0} 的联合/边缘概率乘积条件判断二者不独立",
+        "能由此说明零协方差不等同于独立"
+      ],
+      "remediation": "若判断为独立，检查是否忽略了 Y=X² 使 X 与 Y 之间存在强非线性依赖；重新比较 P(X=0,Y=0) 与 P(X=0)P(Y=0)。"
+    },
+    "unresolved": [
+      {
+        "issue": "无法确认父解释[S1]是否原本带有“在联合正态下”等未显示的限定条件。",
+        "effect_on_answer": "若原文确有此类限定，则该句在限定内成立；当前把它按无条件命题处理并判为假。",
+        "next_step": "查阅父解释的完整上下文或相邻段落，确认是否有条件从句；若确有，则只需在答案中补回该条件。"
+      }
+    ],
+    "clarification": null
+  },
+  "review": "已按审查修订但未复审；不进入自动复用缓存",
+  "repaired": true,
+  "calls": [
+    {
+      "task": "diagnose",
+      "pipeline": "7319c19afd055ea39d0662a7d90fee2a77462ca7ac9f74919db7fdec09c8e54a",
+      "usage": {
+        "prompt_tokens": 1191,
+        "completion_tokens": 817,
+        "total_tokens": 2008,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 295,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "ready",
+        "discipline_route": "formal",
+        "in_context_meaning": "这是上一级解释模块给出的断言：若两个随机变量协方差为零，则它们相互独立。该断言在一般情形下不成立，零协方差只排除线性相关，不能推出独立；只有在线性相关即独立的特殊情形（如二维联合正态）或另有附加条件下才成立。",
+        "statement_type": "deduction",
+        "gaps": [
+          {
+            "kind": "term",
+            "question": "这里的“独立”是按概率论定义（联合分布等于边缘分布之积）还是被误当成“无线性相关”？",
+            "priority": "blocking",
+            "anchor_id": "K13"
+          },
+          {
+            "kind": "inference",
+            "question": "从 Cov(X,Y)=0 到 X⊥Y 的推理步骤是什么？是否存在把“不相关”等同于“独立”的跳步？",
+            "priority": "blocking",
+            "anchor_id": "K13"
+          },
+          {
+            "kind": "boundary",
+            "question": "原断言在什么条件下才成立（例如联合正态、二值变量、或已知特定分布族）？",
+            "priority": "blocking",
+            "anchor_id": "K13"
+          },
+          {
+            "kind": "prerequisite",
+            "question": "是否已区分“协方差为零（不相关）”与“独立”这两个层次不同的概念？",
+            "priority": "useful",
+            "anchor_id": "K13"
+          }
+        ],
+        "prerequisites": [
+          {
+            "term": "协方差",
+            "placement": "before",
+            "why": "需先明确 Cov(X,Y)=E[(X−EX)(Y−EY)] 只度量线性关联的方向与强度。"
+          },
+          {
+            "term": "随机变量独立",
+            "placement": "before",
+            "why": "需知道独立要求所有联合概率/分布信息满足乘积关系，比零协方差强得多。"
+          },
+          {
+            "term": "不相关",
+            "placement": "inline",
+            "why": "用来标注零协方差的准确名称，避免与独立混同。"
+          },
+          {
+            "term": "线性相关与非线性依赖",
+            "placement": "inline",
+            "why": "解释为何存在协方差为零但明显相互依赖的变量，例如对称分布中的平方关系。"
+          }
+        ],
+        "conditions_to_check": [
+          "原断言是否被限定在某个特定分布族或变量类型内；若没有限定，则作为普遍结论为假。",
+          "是否把‘零协方差’写成了‘不相关’，以及是否把‘不相关’误读为‘独立’。",
+          "要检验反例，需同时给出联合分布、边缘分布、协方差计算和独立性检验，而不仅是一个点估计。"
+        ],
+        "evidence_requests": [
+          {
+            "question": "父解释是否还有未显示的上下文或附加条件（例如‘在二维正态下’），使该断言仅在特定条件下成立？",
+            "preferred_source_type": "原文相邻段落或父解释完整内容",
+            "why_local_material_is_insufficient": "当前 evidence 只有这一句，无法判断它是无条件断言还是被截断的条件结论。"
+          }
+        ],
+        "teaching_goal": "读者能复述“零协方差只意味着不相关，不等于独立”，能判断原断言是否需要附加条件，并能构造或检查一个零协方差但不独立的简单反例。",
+        "suggested_section_kinds": [
+          "概念辨析",
+          "必要条件与反例",
+          "成立条件说明"
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "task": "teach",
+      "pipeline": "1e4e796b447394ee8d53fa1ee39a88aebbb28f02fdf1390ba0ab005ca2a6cf71",
+      "usage": {
+        "prompt_tokens": 3439,
+        "completion_tokens": 2168,
+        "total_tokens": 5607,
+        "prompt_cache_hit_tokens": 1408,
+        "prompt_cache_miss_tokens": 2031,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "complete",
+        "title": "“零协方差一定独立”这句话错在哪里",
+        "brief": "这句话作为一般命题是假的：协方差为零只说明两个随机变量没有线性关联（称为“不相关”），而独立要求它们的联合分布完全等于各自边缘分布的乘积，是更强的条件。因此“Cov(X,Y)=0”不能推出“X 与 Y 独立”，只有在额外条件下（如联合正态）才能反推。下面给出一个可手算的反例，并说明该断言在什么条件下才成立。",
+        "sections": [
+          {
+            "local_id": "s1",
+            "kind": "meaning",
+            "title": "两个词各自的确切含义",
+            "body_markdown": "先把两个概念分开。\n\n**协方差为零（不相关）**：Cov(X,Y) = E[(X−EX)(Y−EY)] = 0。它只看乘积偏差的平均值是否为 0，也就是只探测“线性关联”。[S1]\n\n**独立**：对任意可取的事件 A、B，都有 P(X∈A, Y∈B) = P(X∈A)·P(Y∈B)。等价地，联合分布等于两个边缘分布的乘积。这是关于**整个分布**的条件，比只看一个数字（协方差）强得多。\n\n所以“不相关”和“独立”不在同一个层次：不相关只约束一个二阶矩，独立约束全部概率信息。父解释用[S1]里的“零协方差”直接跳到“独立”，是跳步。",
+            "evidence_ids": [
+              "S1"
+            ]
+          },
+          {
+            "local_id": "s2",
+            "kind": "example",
+            "title": "一个协方差为零但不独立的例子",
+            "body_markdown": "设 X 等概率取值 −1、0、1（各概率 1/3），令 Y = X²。\n\n**算协方差**：EX = (−1+0+1)/3 = 0；E(XY) = E(X³) = (−1+0+1)/3 = 0；EY = E(X²) = (1+0+1)/3 = 2/3。\nCov(X,Y) = E(XY) − EX·EY = 0 − 0·(2/3) = 0。协方差为零。\n\n**检验独立**：取事件 {X=0} 与 {Y=0}。因为 Y=X²，Y=0 当且仅当 X=0，所以 P(X=0, Y=0) = P(X=0) = 1/3。而 P(X=0)·P(Y=0) = (1/3)·(1/3) = 1/9。1/3 ≠ 1/9，乘积条件不成立，故 X 与 Y **不独立**。\n\n结论：这个例子中协方差为 0 却存在明显的依赖关系（知道 X 就完全知道 Y），直接反驳“零协方差一定独立”。依赖是**非线性**的（Y 是 X 的平方），而协方差只对线性关系敏感，所以“看不见”它。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "s3",
+            "kind": "boundary",
+            "title": "它在什么条件下才成立",
+            "body_markdown": "一般情形下，正确方向是“独立 ⇒ 不相关（零协方差）”（前提是二阶矩有限），反过来不成立。\n\n但存在一类重要特例使反推成立：若 (X,Y) 服从**联合正态分布**，则 Cov(X,Y)=0 确实等价于 X 与 Y 独立。原因是联合正态完全由均值、方差、协方差这五个参数决定，协方差为 0 时联合密度恰好分解成两个边缘正态密度的乘积。\n\n所以判断原断言时，要看它是否被限定在特定分布族（如联合正态）内。若[S1]没有给出这种限定，它作为普遍结论就是假的。",
+            "evidence_ids": [
+              "S1"
+            ]
+          }
+        ],
+        "return_to_source": "父解释的那句“零协方差一定独立”[S1]是一条**无条件**的一般断言，而它在一般情况下不成立。你可以这样修正理解：零协方差只等于“不相关”，即没有线性关联；独立还要联合分布整体等于边缘分布之积。二者之间隔着一个“联合分布是否为正态之类的特殊结构”的条件。只有当额外限定（例如联合正态、或某些特定二值/指数族结构）被明确写出时，才能从零协方差推回独立。回到原句时，请先找它的条件从句；找不到，就应把它当作错误命题，并用 Y=X² 的反例替代。",
+        "claims": [
+          {
+            "local_id": "c1",
+            "text": "父解释断言“零协方差一定独立”，是一条一般性命题。",
+            "appears_in": [
+              "brief",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c2",
+            "text": "该断言作为普遍命题为假：协方差为零只意味着不相关，不等于独立。",
+            "appears_in": [
+              "brief",
+              "s1",
+              "return_to_source"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "s2"
+          },
+          {
+            "local_id": "c3",
+            "text": "独立要求联合分布等于边缘分布之积，是比零协方差更强的条件。",
+            "appears_in": [
+              "brief",
+              "s1"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c4",
+            "text": "Y=X² 且 X 在 {−1,0,1} 上等概率取值时，Cov(X,Y)=0 但 X 与 Y 不独立。",
+            "appears_in": [
+              "brief",
+              "s2"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "s2"
+          },
+          {
+            "local_id": "c5",
+            "text": "在联合正态分布下，零协方差确实等价于独立，这是原断言能成立的特殊条件。",
+            "appears_in": [
+              "s3",
+              "return_to_source"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          }
+        ],
+        "followups": [
+          {
+            "term_or_phrase": "联合正态分布",
+            "section_id": "s3",
+            "why": "想知道“为什么正态下零协方差就能推出独立”，需要知道联合正态密度的参数结构。"
+          },
+          {
+            "term_or_phrase": "二阶矩有限",
+            "section_id": "s3",
+            "why": "协方差和“独立⇒不相关”的推导都依赖 EX²、EY² 存在，需要弄清这个技术前提。"
+          },
+          {
+            "term_or_phrase": "线性相关与非线性依赖",
+            "section_id": "s2",
+            "why": "想更系统地理解协方差为何只探测线性关系、常见非线性依赖有哪些。"
+          }
+        ],
+        "micro_check": {
+          "question": "设 X 以概率 1/2 取 −1、以概率 1/2 取 1，令 Y=X²。请判断 Cov(X,Y) 是否为 0，以及 X、Y 是否独立，并说明理由。",
+          "hint": "先算 EX 和 E(XY)，再取事件 {X=1} 与 {Y=1} 检验乘积条件。",
+          "answer": "EX=0；XY=X³，E(X³)=(−1)·1/2+(1)·1/2=0，故 Cov(X,Y)=0−0·EY=0。但 P(X=1,Y=1)=1/2，而 P(X=1)·P(Y=1)=(1/2)·1=1/2——这里恰好相等。换个事件：P(X=−1,Y=−1)=0（因为 Y 永远等于 1，不可能为 −1），而 P(X=−1)·P(Y=−1)=(1/2)·0=0，也相等。事实上本例中 Y 恒为 1，是常数，与任何变量都独立，所以这是一个协方差为零**且**独立的特例，不是反例。要得到反例需让 Y 至少取两个值，如 s2 中的 Y=X²、X 取 −1/0/1。",
+          "success_criteria": [
+            "能正确算出 Cov(X,Y)=0",
+            "能检验独立并用联合/边缘概率的乘积条件给出判断",
+            "能识别 Y 为常数时独立成立，从而区分本例与真正的反例"
+          ],
+          "remediation": "若误判为反例，说明忽略了“Y 恒为 1 是常数”这一特殊结构；重做时先列出 Y 的全部取值，再比较 P(X=x,Y=y) 与 P(X=x)P(Y=y)。"
+        },
+        "unresolved": [
+          {
+            "issue": "无法确认父解释[S1]是否原本带有“在联合正态下”等未显示的限定条件。",
+            "effect_on_answer": "若原文确有此类限定，则该句在限定内成立；当前把它按无条件命题处理并判为假。",
+            "next_step": "查阅父解释的完整上下文或相邻段落，确认是否有条件从句；若确有，则只需在答案中补回该条件。"
+          }
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "task": "review",
+      "pipeline": "000f848553d207d31874fad081eed1e6a9f3e9480fa228b20aed09dd78fe99a3",
+      "usage": {
+        "prompt_tokens": 3745,
+        "completion_tokens": 810,
+        "total_tokens": 4555,
+        "prompt_cache_hit_tokens": 768,
+        "prompt_cache_miss_tokens": 2977,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "verdict": "revise",
+        "issues": [
+          {
+            "severity": "major",
+            "location": "s1/body_markdown 与 c1 的 evidence 使用",
+            "problem": "s1 是对概念的一般性辨析（协方差定义、独立定义），却整体标注 [S1]；S1 只是父解释那句错误断言，并不支持协方差的定义或独立的定义。把 S1 当作这些背景知识的依据属于引用错位，也容易让读者以为独立定义来自该来源。",
+            "evidence_ids": [
+              "S1"
+            ],
+            "required_change": "从 s1 正文移除 [S1] 标注；若必须保留，只用于指出父解释的原句。c1 保留 [S1] 可以，但要确保它只引用“父解释断言”这一事实，并明确其余定义为背景知识。"
+          },
+          {
+            "severity": "major",
+            "location": "micro_check.answer",
+            "problem": "微练习题设计成“提示读者取事件 {X=1} 与 {Y=1}，算得两边相等；再换事件 {X=−1} 与 {Y=−1}，也相等”，最终揭示 Y 恒为 1、X 与 Y 独立。这个过程会引导读者先怀疑独立、再被反复推翻，且读者可能误以为“Y 为常数”是特例而没掌握判别方法；核对独立性的目标被练习题的自我否定结构绕住，检查效率偏低。",
+            "evidence_ids": [],
+            "required_change": "把微练习改为直接给出 Y 全部取值后要求判断：先列 Y 的取值集合 {1}，故 Y 为常数，Y 与任意变量独立；或者把 X 改为取 −1、0、1 保留 Y=X²，让读者直接算 Cov 并用 {X=0,Y=0} 检验不独立。成功标准中“能识别 Y 为常数时独立成立”这一条应保留，但不要在题目内植入会误导的事件组合顺序。"
+          },
+          {
+            "severity": "minor",
+            "location": "s3/body_markdown 与 c5",
+            "problem": "“联合正态完全由均值、方差、协方差这五个参数决定”这一说法需要更精确：二维联合正态的参数是 μ_X、μ_Y、σ_X²、σ_Y²、ρ（或 Cov），共 5 个参数，但表述为“这五个参数”并未逐一点名，且“协方差为 0 时联合密度恰好分解”是对结论的陈述而非推导。对于已学过期望的读者，作为背景可以接受，但仍应避免只给结论式断言。",
+            "evidence_ids": [],
+            "required_change": "改写为“联合正态分布由两个边缘均值、两个边缘方差和一个相关系数（或协方差）完全确定”，并说明协方差为 0 意味着相关系数为 0，代入二维正态密度即得两个一元正态密度之积，因此独立。"
+          },
+          {
+            "severity": "minor",
+            "location": "s3/body_markdown 中“独立 ⇒ 不相关”",
+            "problem": "“独立 ⇒ 不相关（前提是二阶矩有限）”这一条件写在括号内，容易被略过；但这是把两个概念联系起来的推理前提，缺失会让读者误以为无条件成立。",
+            "evidence_ids": [],
+            "required_change": "把“二阶矩有限”提升为正文句子，并简注：E(XY)=EX·EY 由独立得到，再由 Cov=E(XY)−EX·EY=0 得零协方差；若二阶矩不存在，协方差本身无定义。"
+          }
+        ],
+        "unverified": [
+          "父解释是否在[S1]之外还有未显示的限定条件（例如“在联合正态下”），当前证据只有这一句，无法确认。",
+          "候选解释引用的“二维联合正态参数结构”属一般背景知识，本次任务未联网核查，无法对照教材原文核验。"
+        ]
+      }
+    },
+    {
+      "task": "repair",
+      "pipeline": "289639296effd57007c7ec976bb31fbdae11109d4a72cf9f07f6c3b5e7450d73",
+      "usage": {
+        "prompt_tokens": 4632,
+        "completion_tokens": 2185,
+        "total_tokens": 6817,
+        "prompt_cache_hit_tokens": 512,
+        "prompt_cache_miss_tokens": 4120,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "complete",
+        "title": "“零协方差一定独立”这句话错在哪里",
+        "brief": "这句作为一般性命题是假的。协方差为零只说明两个随机变量没有线性关联（称为“不相关”），而独立要求联合分布完全等于各自边缘分布的乘积，是更强且更细的条件。所以 Cov(X,Y)=0 不能推出 X 与 Y 独立；只有在额外条件（例如联合正态）下才能反推。下面先辨析概念，再给出一个可直接手算的反例，最后说明该断言在什么条件下才成立。",
+        "sections": [
+          {
+            "local_id": "s1",
+            "kind": "meaning",
+            "title": "两个词各自的确切含义",
+            "body_markdown": "先把两个概念分开。以下两条是概率论中的一般背景定义，不是来自父解释。\n\n**协方差为零（不相关）**：Cov(X,Y) = E[(X−EX)(Y−EY)] = 0。它只看乘积偏差的平均值是否为 0，也就是只探测“线性关联”。\n\n**独立**：对任意可取的事件 A、B，都有 P(X∈A, Y∈B) = P(X∈A)·P(Y∈B)。等价地，联合分布等于两个边缘分布的乘积。这是关于**整个分布**的条件，比只看一个数字（协方差）强得多。\n\n所以“不相关”和“独立”不在同一个层次：不相关只约束一个二阶矩，独立约束全部概率信息。父解释那句“零协方差一定独立”[S1]正是把这两层混为一谈、直接跳步。",
+            "evidence_ids": [
+              "S1"
+            ]
+          },
+          {
+            "local_id": "s2",
+            "kind": "example",
+            "title": "一个协方差为零但不独立的例子",
+            "body_markdown": "设 X 等概率取值 −1、0、1（各概率 1/3），令 Y = X²。\n\n**算协方差**：EX = (−1+0+1)/3 = 0；E(XY) = E(X³) = (−1+0+1)/3 = 0；EY = E(X²) = (1+0+1)/3 = 2/3。\nCov(X,Y) = E(XY) − EX·EY = 0 − 0·(2/3) = 0。协方差为零。\n\n**检验独立**：取事件 {X=0} 与 {Y=0}。因为 Y=X²，Y=0 当且仅当 X=0，所以 P(X=0, Y=0) = P(X=0) = 1/3。而 P(X=0)·P(Y=0) = (1/3)·(1/3) = 1/9。1/3 ≠ 1/9，乘积条件不成立，故 X 与 Y **不独立**。\n\n结论：这个例子中协方差为 0 却存在明显的依赖关系（知道 X 就完全知道 Y），直接反驳“零协方差一定独立”。依赖是**非线性**的（Y 是 X 的平方），而协方差只对线性关系敏感，所以“看不见”它。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "s3",
+            "kind": "boundary",
+            "title": "它在什么条件下才成立",
+            "body_markdown": "一般情形下，正确方向是“独立 ⇒ 不相关（零协方差）”（前提是二阶矩有限），反过来不成立。\n\n但存在一类重要特例使反推成立：若 (X,Y) 服从**联合正态分布**，则 Cov(X,Y)=0 确实等价于 X 与 Y 独立。原因是联合正态完全由均值、方差、协方差这五个参数决定，协方差为 0 时联合密度恰好分解成两个边缘正态密度的乘积。\n\n所以判断原断言[S1]时，要看它是否被限定在特定分布族（如联合正态）内。若没有给出这种限定，它作为普遍结论就是假的。",
+            "evidence_ids": [
+              "S1"
+            ]
+          }
+        ],
+        "return_to_source": "父解释的那句“零协方差一定独立”[S1]是一条**无条件**的一般断言，而它在一般情况下不成立。你可以这样修正理解：零协方差只等于“不相关”，即没有线性关联；独立还要联合分布整体等于边缘分布之积。二者之间隔着一个“联合分布是否为正态之类的特殊结构”的条件。只有当额外限定（例如联合正态）被明确写出时，才能从零协方差推回独立。回到原句时，请先找它的条件从句；找不到，就应把它当作错误命题，并用 Y=X² 的反例替代。",
+        "claims": [
+          {
+            "local_id": "c1",
+            "text": "父解释断言“零协方差一定独立”，是一条一般性命题。",
+            "appears_in": [
+              "brief",
+              "s1",
+              "s3",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c2",
+            "text": "该断言作为普遍命题为假：协方差为零只意味着不相关，不等于独立。",
+            "appears_in": [
+              "brief",
+              "s1",
+              "return_to_source"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "s2"
+          },
+          {
+            "local_id": "c3",
+            "text": "独立要求联合分布等于边缘分布之积，是比零协方差更强的条件。",
+            "appears_in": [
+              "brief",
+              "s1"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c4",
+            "text": "Y=X² 且 X 在 {−1,0,1} 上等概率取值时，Cov(X,Y)=0 但 X 与 Y 不独立。",
+            "appears_in": [
+              "brief",
+              "s2"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "s2"
+          },
+          {
+            "local_id": "c5",
+            "text": "在联合正态分布下，零协方差确实等价于独立，这是原断言能成立的特殊条件。",
+            "appears_in": [
+              "brief",
+              "s3",
+              "return_to_source"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          }
+        ],
+        "followups": [
+          {
+            "term_or_phrase": "联合正态分布",
+            "section_id": "s3",
+            "why": "想知道“为什么正态下零协方差就能推出独立”，需要知道联合正态密度的参数结构。"
+          },
+          {
+            "term_or_phrase": "二阶矩有限",
+            "section_id": "s3",
+            "why": "协方差和“独立⇒不相关”的推导都依赖 EX²、EY² 存在，需要弄清这个技术前提。"
+          },
+          {
+            "term_or_phrase": "线性相关与非线性依赖",
+            "section_id": "s2",
+            "why": "想更系统地理解协方差为何只探测线性关系、常见非线性依赖有哪些。"
+          }
+        ],
+        "micro_check": {
+          "question": "设 X 等概率取值 −1、0、1，令 Y=X²。请判断 Cov(X,Y) 是否为 0，以及 X、Y 是否独立，并给出判断依据。",
+          "hint": "先算 EX、E(XY)，再取事件 {X=0} 与 {Y=0} 检验乘积条件。",
+          "answer": "EX = (−1+0+1)/3 = 0；E(XY) = E(X³) = (−1+0+1)/3 = 0；EY = E(X²) = (1+0+1)/3 = 2/3。所以 Cov(X,Y) = E(XY) − EX·EY = 0 − 0·(2/3) = 0。\n检验独立：P(X=0,Y=0) = P(X=0) = 1/3（因为 Y=X² 且 X 只有 0 时 Y=0 才发生，非零时 Y=1 或 1），而 P(X=0)·P(Y=0) = (1/3)·(1/3) = 1/9 ≠ 1/3。乘积条件不成立，故 X 与 Y 不独立。\n这说明零协方差并不推出独立。",
+          "success_criteria": [
+            "能正确算出 Cov(X,Y)=0",
+            "能用事件 {X=0} 与 {Y=0} 的联合/边缘概率乘积条件判断二者不独立",
+            "能由此说明零协方差不等同于独立"
+          ],
+          "remediation": "若判断为独立，检查是否忽略了 Y=X² 使 X 与 Y 之间存在强非线性依赖；重新比较 P(X=0,Y=0) 与 P(X=0)P(Y=0)。"
+        },
+        "unresolved": [
+          {
+            "issue": "无法确认父解释[S1]是否原本带有“在联合正态下”等未显示的限定条件。",
+            "effect_on_answer": "若原文确有此类限定，则该句在限定内成立；当前把它按无条件命题处理并判为假。",
+            "next_step": "查阅父解释的完整上下文或相邻段落，确认是否有条件从句；若确有，则只需在答案中补回该条件。"
+          }
+        ],
+        "clarification": null
+      }
+    }
+  ],
+  "elapsedMs": 25829,
+  "status": "contract_pass",
+  "human_review": null,
+  "learner_trial": null,
+  "date": "2026-09-21T23:43:30.125Z"
+}

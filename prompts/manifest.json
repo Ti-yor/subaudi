@@ -1,0 +1,14 @@
+{
+  "pipelineVersion": "2026-09-22.5",
+  "tasks": {
+    "common": "common.v1.txt",
+    "overview": "overview.v1.txt",
+    "diagnose": "diagnose.v1.txt",
+    "teach": "teach.v4.txt",
+    "child": "child.v1.txt",
+    "research-plan": "research-plan.v1.txt",
+    "transcribe": "transcribe.v1.txt",
+    "review": "review.v2.txt",
+    "repair": "repair.v1.txt"
+  }
+}

@@ -1,0 +1,180 @@
+{
+  "case": "K02",
+  "status": "failed",
+  "error": "正文引用不一致",
+  "raw": {
+    "status": "complete",
+    "title": "为什么 |x| 在 0 点连续却不可导",
+    "brief": "这句话说的是：函数 f(x)=|x| 的图像在 x=0 处不断裂（连续），但在这里画不出一条唯一的切线（不可导）。关键在于导数是一个“双侧极限”：从 0 的左侧靠近时，差商恒为 -1；从右侧靠近时恒为 +1；两侧极限不相等，所以导数不存在。而连续只要求函数值趋近于 f(0)=0，左右都满足，因此连续成立。读原句时要意识到作者省略了“用导数定义逐侧算差商”这一步。",
+    "sections": [
+      {
+        "local_id": "sec_meaning",
+        "kind": "meaning",
+        "title": "这句话在断言两件事",
+        "body_markdown": "原句 [S1] 同时给出两个判断：\n\n1. **连续**：x 靠近 0 时，f(x) 靠近 f(0)。也就是图像在 x=0 处没有断开、没有跳空。\n2. **不可导**：f 在 x=0 处的导数不存在，也就是图像在该点没有一条唯一的切线。\n\n注意“但”字：它强调这两件事可以同时发生——连续并不自动带来可导。这正是本句想让你记住的反差。",
+        "evidence_ids": [
+          "S1"
+        ]
+      },
+      {
+        "local_id": "sec_prereq",
+        "kind": "prerequisite",
+        "title": "先固定两个定义",
+        "body_markdown": "**连续（在 x=0 处）** 要求\n$$\\lim_{x\\to 0} f(x) = f(0).$$\n这里 f(0)=|0|=0，所以只要 x 靠近 0 时 f(x) 靠近 0 即可。\n\n**可导（在 x=0 处）** 要求差商\n$$\\frac{f(0+h)-f(0)}{h}=\\frac{|h|-0}{h}=\\frac{|h|}{h}$$\n当 h→0 时趋于一个**有限**的同一数值。这个极限就是 f′(0)。\n\n关键差别：连续只问“函数值往哪走”，可导还问“两侧的变化率是否一致且有限”。两者不是一回事。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "sec_mechanism",
+        "kind": "mechanism",
+        "title": "逐侧算差商：矛盾就出在这里",
+        "body_markdown": "把 h 分成正负来看 $\\dfrac{|h|}{h}$：\n\n- h>0 时，|h|=h，所以差商 = h/h = **+1**。\n- h<0 时，|h|=−h，所以差商 = (−h)/h = **−1**。\n\n于是：\n- 右极限 $\\lim_{h\\to 0^+}\\frac{|h|}{h}=1$，\n- 左极限 $\\lim_{h\\to 0^-}\\frac{|h|}{h}=-1$。\n\n两者不相等，所以双侧极限不存在，f′(0) 不存在——这就是“不可导”。\n\n再看连续性：当 x→0 时（无论从左还是从右），|x|→0=f(0)，左右函数值极限一致，所以连续成立。两件事各自独立成立，并不冲突。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "sec_boundary",
+        "kind": "boundary",
+        "title": "条件与范围：别把结论推广过头",
+        "body_markdown": "- “不可导”只针对 **x=0 这一个点**。因为 |x| 在 x≠0 的每一点都是光滑的直线段，那里可导（x>0 时导数为 +1，x<0 时导数为 −1）。\n- 原句没有说“处处不可导”，也没有说“连续一定不可导”。事实上绝大多数连续函数在其定义域内的大部分点可导；|x| 只是“连续但不处处可导”的一个典型例子。\n- 这里用到的连续性、可导性都是“在某一点”的局部性质，不是整个函数范围的全局断言。\n\n所以正确的读法是：**在 x=0 这个特定点**，连续成立而可导不成立。",
+        "evidence_ids": [
+          "S1"
+        ]
+      },
+      {
+        "local_id": "sec_example",
+        "kind": "example",
+        "title": "跟着做一遍数值检查",
+        "body_markdown": "取几个具体的 h 看差商：\n\n| h | |h|/h |\n|---|---|\n| 0.5 | 1 |\n| 0.1 | 1 |\n| 0.01 | 1 |\n| −0.5 | −1 |\n| −0.1 | −1 |\n| −0.01 | −1 |\n\n不论 h 多小，只要 h>0 差商就停在 +1，只要 h<0 就停在 −1。想让它趋于同一个数是不可能的，因此极限不存在。这与上一节的代数推导完全一致。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "sec_comparison",
+        "kind": "comparison",
+        "title": "把它当成“剪刀口”而不是“断裂”",
+        "body_markdown": "把 |x| 比作一个 V 形折角：连续意味着**两条臂在原点相接、没有留下空隙**；不可导意味着**相接处不是一个平滑的弯，而是一个尖角**，从左边上来和从右边上去的“倾斜方向”相反，无法定义唯一切线。\n\n这个类比的边界：它只帮助你记住“接上但折角”这个直观；它**不能**用来判断其他点的可导性，也不能替代上面差商极限的计算。遇到更复杂的函数，仍然必须回到“差商极限是否存在且唯一”这个定义。",
+        "evidence_ids": []
+      }
+    ],
+    "return_to_source": "回到原句：“f(x)=|x| 在 0 处连续但不可导。”现在你应该能读出作者省略的中间步骤：连续是因为 x→0 时 |x|→0=f(0)；不可导是因为差商 |h|/h 在 h→0⁺ 时为 +1、h→0⁻ 时为 −1，两侧极限不同，故 f′(0) 不存在。原句本身没问题，但缺少这两步推导，所以不能只凭它下结论；要理解它，需要自己补上“用导数定义算左右差商”这一环节。另外，这里的结论只说 x=0 这一点，不适用于其他点。",
+    "claims": [
+      {
+        "local_id": "c1",
+        "text": "原句断言 f(x)=|x| 在 x=0 处连续。",
+        "appears_in": [
+          "brief",
+          "sec_meaning",
+          "return_to_source"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c2",
+        "text": "原句断言 f(x)=|x| 在 x=0 处不可导。",
+        "appears_in": [
+          "brief",
+          "sec_meaning",
+          "return_to_source"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c3",
+        "text": "连续的定义要求 x→0 时 f(x)→f(0)，这里 f(0)=0 且两侧函数值都趋于 0，故连续成立。",
+        "appears_in": [
+          "brief",
+          "sec_prereq",
+          "sec_mechanism",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "sec_mechanism"
+      },
+      {
+        "local_id": "c4",
+        "text": "x=0 处的导数要求差商 |h|/h 当 h→0 时趋于同一有限值。",
+        "appears_in": [
+          "sec_prereq",
+          "return_to_source"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": "sec_prereq"
+      },
+      {
+        "local_id": "c5",
+        "text": "差商 |h|/h 在 h>0 时为 +1、h<0 时为 −1，两侧极限分别为 1 与 −1，不等，故 f′(0) 不存在。",
+        "appears_in": [
+          "brief",
+          "sec_mechanism",
+          "sec_example",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "sec_mechanism"
+      },
+      {
+        "local_id": "c6",
+        "text": "该结论只针对 x=0 这一点；|x| 在 x≠0 处可导（x>0 导数为 1，x<0 导数为 −1）。",
+        "appears_in": [
+          "sec_boundary",
+          "return_to_source"
+        ],
+        "basis": "derived",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": "sec_boundary"
+      }
+    ],
+    "followups": [
+      {
+        "term_or_phrase": "双侧极限",
+        "section_id": "sec_prereq",
+        "why": "想知道为什么导数必须左右两侧趋于同一个值，而不是只要某一侧存在就行。"
+      },
+      {
+        "term_or_phrase": "差商",
+        "section_id": "sec_mechanism",
+        "why": "差商是导数的原始定义对象，想弄清它和导数的关系。"
+      },
+      {
+        "term_or_phrase": "其他尖角函数",
+        "section_id": "sec_boundary",
+        "why": "想知道还有哪些函数在某点连续但不可导，以及判断是否要重复同一套左右差商步骤。"
+      }
+    ],
+    "micro_check": {
+      "question": "把条件换成 g(x)=|x−2|，它在 x=2 处是否可导？为什么？（提示：把 h 的左右两侧代入差商，看两侧是否相同。）",
+      "hint": "计算 [g(2+h)−g(2)]/h = |h|/h，再令 h>0 和 h<0 分别取值。",
+      "answer": "不可导。g(2)=0 且 x→2 时 g(x)→0，所以连续；但差商 [g(2+h)−g(2)]/h = |h|/h，当 h>0 时为 +1，h<0 时为 −1，两侧极限不同，故 g′(2) 不存在。",
+      "success_criteria": [
+        "指出 g(2)=0、x→2 时 g(x)→0，连续成立",
+        "算出差商为 |h|/h",
+        "分别给出 h>0 得 +1、h<0 得 −1，说明两侧不等"
+      ],
+      "remediation": "如果只判断了连续性而没算差商，说明把“连续”当成了“可导”；回到“先固定两个定义”一节，重做左右差商的对比。如果算出差商但没看出两侧不同，回到“逐侧算差商”一节，把 h 分正负两类再取极限。"
+    },
+    "unresolved": [],
+    "clarification": null
+  },
+  "usage": {
+    "prompt_tokens": 2313,
+    "completion_tokens": 2323,
+    "total_tokens": 4636,
+    "prompt_cache_hit_tokens": 1280,
+    "prompt_cache_miss_tokens": 1033,
+    "response_model": "deepseek-flash"
+  },
+  "elapsedMs": 10481,
+  "human_review": null,
+  "date": "2026-09-21T23:34:07.212Z"
+}

@@ -1,0 +1,33 @@
+{
+  "results": [
+    {
+      "case": "K01",
+      "status": "contract_pass",
+      "usage": {
+        "prompt_tokens": 2311,
+        "completion_tokens": 2219,
+        "total_tokens": 4530,
+        "prompt_cache_hit_tokens": 896,
+        "prompt_cache_miss_tokens": 1415,
+        "response_model": "deepseek-flash"
+      },
+      "elapsedMs": 10463
+    },
+    {
+      "case": "K02",
+      "status": "failed",
+      "error": "正文引用不一致",
+      "usage": {
+        "prompt_tokens": 2313,
+        "completion_tokens": 2323,
+        "total_tokens": 4636,
+        "prompt_cache_hit_tokens": 1280,
+        "prompt_cache_miss_tokens": 1033,
+        "response_model": "deepseek-flash"
+      },
+      "elapsedMs": 10481
+    }
+  ],
+  "totalTokensOrReserved": 9166,
+  "realAPI": true
+}

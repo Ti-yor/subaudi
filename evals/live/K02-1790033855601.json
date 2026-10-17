@@ -1,0 +1,873 @@
+{
+  "case": "K02",
+  "model": "deepseek-flash",
+  "pipeline": "2026-09-22.3",
+  "input": {
+    "language": "zh-CN",
+    "reader_profile": {
+      "declared_background": "知道绝对值与斜率",
+      "goal": "独立读回原句、检查条件、完成变式"
+    },
+    "selection": {
+      "anchor_id": "K02",
+      "text": "f(x)=|x| 在 0 处连续但不可导。"
+    },
+    "context": {
+      "nearby_blocks": [
+        "f(x)=|x| 在 0 处连续但不可导。"
+      ],
+      "coverage": "当前原创测试段落",
+      "extraction_issues": [],
+      "parent_excerpt": null
+    },
+    "evidence": [
+      {
+        "source_id": "S1",
+        "excerpt": "f(x)=|x| 在 0 处连续但不可导。",
+        "title": "连续与可导",
+        "verification": "source_only"
+      }
+    ],
+    "capabilities": {
+      "web_search": false,
+      "vision": false
+    },
+    "limits": {
+      "max_sections": 4,
+      "max_checks": 1,
+      "max_followups": 3
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "limited",
+            "needs_clarification"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "brief": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "kind": {
+                "enum": [
+                  "meaning",
+                  "purpose",
+                  "prerequisite",
+                  "mechanism",
+                  "example",
+                  "boundary",
+                  "comparison"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "body_markdown": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "local_id",
+              "kind",
+              "title",
+              "body_markdown",
+              "evidence_ids"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 8
+        },
+        "return_to_source": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "appears_in": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              },
+              "basis": {
+                "enum": [
+                  "source_statement",
+                  "derived",
+                  "background",
+                  "interpretation",
+                  "uncertain"
+                ]
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              },
+              "derivation_section_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "local_id",
+              "text",
+              "appears_in",
+              "basis",
+              "evidence_ids",
+              "derivation_section_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "followups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "term_or_phrase": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "section_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "why": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "term_or_phrase",
+              "section_id",
+              "why"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "micro_check": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "question": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "hint": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "answer": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "success_criteria": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "maxItems": 50
+            },
+            "remediation": {
+              "type": "string",
+              "maxLength": 16000
+            }
+          },
+          "required": [
+            "question",
+            "hint",
+            "answer",
+            "success_criteria",
+            "remediation"
+          ],
+          "additionalProperties": false
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "issue": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "effect_on_answer": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "next_step": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "issue",
+              "effect_on_answer",
+              "next_step"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "clarification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "title",
+        "brief",
+        "sections",
+        "return_to_source",
+        "claims",
+        "followups",
+        "micro_check",
+        "unresolved",
+        "clarification"
+      ],
+      "additionalProperties": false
+    },
+    "diagnosis": {
+      "status": "ready",
+      "discipline_route": "formal",
+      "in_context_meaning": "这是一个关于函数 f(x)=|x| 在点 x=0 处的性质断言：该函数在 0 处连续，但在 0 处不可导。即它同时给出一个肯定性结论（连续）和一个否定性结论（不可导），后半句是对前半句的补充对照。",
+      "statement_type": "deduction",
+      "gaps": [
+        {
+          "kind": "term",
+          "question": "“在 0 处连续”具体指哪个极限式成立，需不需要用 ε-δ 或极限语言确认？",
+          "priority": "useful",
+          "anchor_id": "K02"
+        },
+        {
+          "kind": "term",
+          "question": "“在 0 处可导”准确定义是什么？为什么它比连续性要求更强？",
+          "priority": "blocking",
+          "anchor_id": "K02"
+        },
+        {
+          "kind": "inference",
+          "question": "从 |x| 的分段表达式出发，如何分别算出连续性和可导性所需的左右极限或左右导数？",
+          "priority": "blocking",
+          "anchor_id": "K02"
+        },
+        {
+          "kind": "boundary",
+          "question": "不可导是仅指 x=0 这一点，还是说 |x| 在别处也不可导？原句的量词/范围是“在 0 处”。",
+          "priority": "useful",
+          "anchor_id": "K02"
+        },
+        {
+          "kind": "structure",
+          "question": "“连续但不可导”这个表述在命题结构上意味着什么：可导是否蕴含连续，反之是否成立？",
+          "priority": "useful",
+          "anchor_id": "K02"
+        }
+      ],
+      "prerequisites": [
+        {
+          "term": "函数在一点连续的定义（极限值等于函数值）",
+          "placement": "before",
+          "why": "不理解连续的定义，就无法验证 |x| 在 0 处的连续性，也无法理解“连续但不可导”中的前半句。"
+        },
+        {
+          "term": "函数在一点可导的定义（差商的极限存在）",
+          "placement": "before",
+          "why": "这是判断不可导的核心；若不知道可导要求左右导数相等，就无法解释为什么 |x| 在 0 处不可导。"
+        },
+        {
+          "term": "左极限、右极限与左右导数",
+          "placement": "inline",
+          "why": "用于具体计算 |x| 在 0 处左右行为不对称，从而说明连续成立而可导不成立。"
+        },
+        {
+          "term": "可导必连续（但连续不一定可导）",
+          "placement": "optional",
+          "why": "帮助理解这个例子在整个微积分命题网络中的位置，属于拓展背景，不是读懂当前句子的必需前提。"
+        }
+      ],
+      "conditions_to_check": [
+        "原句断言的范围是否限定在 x=0 这一点，而非整个定义域。",
+        "连续性的判断是否使用函数在 0 处的值 f(0)=0。",
+        "可导性的判断是否检查差商 (|h|-0)/h 当 h→0 时的双侧极限是否相等。"
+      ],
+      "evidence_requests": [],
+      "teaching_goal": "读者能自己写出 |x| 的分段形式，用极限验证它在 0 处连续，用左右差商说明它在 0 处不可导，并能复述“可导必连续、连续不一定可导”的结构关系。",
+      "suggested_section_kinds": [
+        "定义回填",
+        "左右极限/左右导数计算",
+        "命题结构说明",
+        "边界与常见误解"
+      ],
+      "clarification": null
+    }
+  },
+  "draft": {
+    "status": "limited",
+    "title": "|x| 在 0 处：为什么连续却不可导",
+    "brief": "这句话说的是：函数 f(x)=|x| 在 x=0 这一点满足连续的定义，但不满足可导的定义。关键在于可导要求在 0 处的差商 (|0+h|-|0|)/h = |h|/h 当 h→0 时极限存在，而 h 从右边趋于 0 时这个值恒为 1，从左边趋于 0 时恒为 -1，两侧不相等，所以极限不存在。原句只对 x=0 这一点下断言，并不否定 |x| 在其他点的可导性（事实上除 0 外它处处可导）。",
+    "sections": [
+      {
+        "local_id": "sec_meaning",
+        "kind": "meaning",
+        "title": "先弄清“连续”和“可导”各自要求什么",
+        "body_markdown": "两个词都是在 x=0 这一点上说的，各自有一个明确的极限条件。\n\n**连续**：要求当 x 趋近 0 时 f(x) 趋近 f(0)。因为 f(0)=|0|=0，所以要验证的是 x→0 时 |x|→0。\n\n**可导**：要求差商的极限存在。差商是\n\n((f(0+h) - f(0)) / h) = (|h| - 0) / h = |h|/h\n\n只有这个量当 h→0（从正、负两侧都趋近）时有同一个有限极限，才说 f 在 0 处可导。注意可导的定义里不允许“左右各走各的”各得一个值，必须两侧相同。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "sec_calc",
+        "kind": "mechanism",
+        "title": "把 |x| 写成两段，分别算两侧",
+        "body_markdown": "把 |x| 拆成两段，|x| 在 x≥0 时等于 x，在 x<0 时等于 -x。\n\n**验证连续**：\n- 当 x>0 且 x→0：|x|=x→0；\n- 当 x<0 且 x→0：|x|=-x→0。\n两侧都趋近 0，且 f(0)=0，所以极限存在且等于函数值。**连续成立。**\n\n**验证可导**：看差商 |h|/h。\n- h>0 时 |h|/h = h/h = 1，所以右极限是 1；\n- h<0 时 |h|/h = (-h)/h = -1，所以左极限是 -1。\n\n两侧极限不相等（1≠-1），差的极限不存在，因此 f 在 0 处不可导。\n\n这里 1 和 -1 不是“近似值”，而是 h>0 或 h<0 时差商恒定的取值，正是它们的不一致让极限失败。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "sec_boundary",
+        "kind": "boundary",
+        "title": "断言只落在 x=0 这一点",
+        "body_markdown": "原句的范围是“在 0 处”，没说别处。事实上当 a≠0 时，|x| 在 a 附近可以写成同一条直线（a>0 时写成 x，a<0 时写成 -x），差商趋于该直线的斜率 1 或 -1，所以除 0 以外处处可导。因此准确的读法是：**不可导恰好发生在 x=0 这一个点**，这是原句“在 0 处”限定的范围，不应读成“|x| 处处不可导”。\n\n顺带指出这类例子的结构意义：可导 ⇒ 连续（可导要求差商极限存在，它比连续更强），但连续 ⇏ 可导。|x| 在 0 处正是“连续但不可导”这一现象的标准代表。",
+        "evidence_ids": []
+      }
+    ],
+    "return_to_source": "回到原句读法：它断言的对象是 f(x)=|x|，断言的落点是 x=0，给出两个结论——在 0 处连续、在 0 处不可导。作者省略的是具体验证步骤：连续性要通过 x→0 时 |x|→0 且 f(0)=0 来确认；不可导要通过差商 |h|/h 的左右极限分别是 1 和 -1、因而不存在来确认。读的时候要保留范围限制“在 0 处”，不要把它扩大为整条曲线都不可导。",
+    "claims": [
+      {
+        "local_id": "c1",
+        "text": "原句断言 f(x)=|x| 在 x=0 处连续且在 x=0 处不可导，范围限定在 0 这一点。",
+        "appears_in": [
+          "brief",
+          "return_to_source"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c2",
+        "text": "f 在 0 处连续的验证是 x→0 时 |x|→0，且 f(0)=0，极限值等于函数值。",
+        "appears_in": [
+          "sec_calc",
+          "brief"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "sec_calc"
+      },
+      {
+        "local_id": "c3",
+        "text": "f 在 0 处不可导的验证是差商 |h|/h 在 h→0+ 时为 1、在 h→0- 时为 -1，左右极限不相等，故极限不存在。",
+        "appears_in": [
+          "sec_calc",
+          "brief"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "sec_calc"
+      },
+      {
+        "local_id": "c4",
+        "text": "|x| 在 a≠0 处可导，因此“不可导”仅发生在 x=0 这一点。",
+        "appears_in": [
+          "sec_boundary",
+          "brief"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "sec_boundary"
+      },
+      {
+        "local_id": "c5",
+        "text": "可导蕴含连续，但连续不蕴含可导；|x| 在 0 处是后者的一个例子。",
+        "appears_in": [
+          "sec_boundary"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": null
+      }
+    ],
+    "followups": [
+      {
+        "term_or_phrase": "“可导必连续”为什么成立",
+        "section_id": "sec_boundary",
+        "why": "读者可能想确认可导 ⇒ 连续这一步的推导，而不只是记住结论。"
+      },
+      {
+        "term_or_phrase": "差商",
+        "section_id": "sec_meaning",
+        "why": "差商是导数定义的载体，想更清楚它为什么能刻画可导性可以追问。"
+      },
+      {
+        "term_or_phrase": "连续函数的其他不可导例子",
+        "section_id": "sec_boundary",
+        "why": "了解与 |x| 同类但形态不同的例子，能加固对“连续但不可导”这一现象的认识。"
+      }
+    ],
+    "micro_check": {
+      "question": "改用分段函数 g(x) = 3x（当 x≥0），g(x) = x（当 x<0）。它在 x=0 处连续吗？可导吗？请写出判断所用的差商。",
+      "hint": "先看 x→0+ 和 x→0- 时 g(x) 分别趋于多少；再看差商 (g(0+h)-g(0))/h 在 h>0 和 h<0 时分别等于多少。",
+      "answer": "连续：g(0)=0，x→0+ 时 g=3x→0，x→0- 时 g=x→0，两侧都等于 g(0)，所以连续。可导：差商 (g(h)-0)/h，h>0 时为 3h/h=3，h<0 时为 h/h=1。左极限 1 ≠ 右极限 3，故差商极限不存在，在 0 处不可导。",
+      "success_criteria": [
+        "正确写出 g(0)=0 并分别算出 x→0+、x→0- 的函数极限，得出连续。",
+        "把差商写成 (g(h)-g(0))/h，而不是用 g 以外的函数。",
+        "分别得到右差商 3 和左差商 1，并据此判定不可导。"
+      ],
+      "remediation": "若连续判断出错，回到“连续性 = 极限值等于函数值”这一段；若可导判断只写了右差商或只用 x≥0 的表达式，说明漏掉了左右两侧必须一致这一条件。"
+    },
+    "unresolved": [],
+    "clarification": null
+  },
+  "review": "已按审查修订但未复审；不进入自动复用缓存",
+  "repaired": true,
+  "calls": [
+    {
+      "task": "diagnose",
+      "pipeline": "7319c19afd055ea39d0662a7d90fee2a77462ca7ac9f74919db7fdec09c8e54a",
+      "usage": {
+        "prompt_tokens": 1210,
+        "completion_tokens": 692,
+        "total_tokens": 1902,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 826,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "ready",
+        "discipline_route": "formal",
+        "in_context_meaning": "这是一个关于函数 f(x)=|x| 在点 x=0 处的性质断言：该函数在 0 处连续，但在 0 处不可导。即它同时给出一个肯定性结论（连续）和一个否定性结论（不可导），后半句是对前半句的补充对照。",
+        "statement_type": "deduction",
+        "gaps": [
+          {
+            "kind": "term",
+            "question": "“在 0 处连续”具体指哪个极限式成立，需不需要用 ε-δ 或极限语言确认？",
+            "priority": "useful",
+            "anchor_id": "K02"
+          },
+          {
+            "kind": "term",
+            "question": "“在 0 处可导”准确定义是什么？为什么它比连续性要求更强？",
+            "priority": "blocking",
+            "anchor_id": "K02"
+          },
+          {
+            "kind": "inference",
+            "question": "从 |x| 的分段表达式出发，如何分别算出连续性和可导性所需的左右极限或左右导数？",
+            "priority": "blocking",
+            "anchor_id": "K02"
+          },
+          {
+            "kind": "boundary",
+            "question": "不可导是仅指 x=0 这一点，还是说 |x| 在别处也不可导？原句的量词/范围是“在 0 处”。",
+            "priority": "useful",
+            "anchor_id": "K02"
+          },
+          {
+            "kind": "structure",
+            "question": "“连续但不可导”这个表述在命题结构上意味着什么：可导是否蕴含连续，反之是否成立？",
+            "priority": "useful",
+            "anchor_id": "K02"
+          }
+        ],
+        "prerequisites": [
+          {
+            "term": "函数在一点连续的定义（极限值等于函数值）",
+            "placement": "before",
+            "why": "不理解连续的定义，就无法验证 |x| 在 0 处的连续性，也无法理解“连续但不可导”中的前半句。"
+          },
+          {
+            "term": "函数在一点可导的定义（差商的极限存在）",
+            "placement": "before",
+            "why": "这是判断不可导的核心；若不知道可导要求左右导数相等，就无法解释为什么 |x| 在 0 处不可导。"
+          },
+          {
+            "term": "左极限、右极限与左右导数",
+            "placement": "inline",
+            "why": "用于具体计算 |x| 在 0 处左右行为不对称，从而说明连续成立而可导不成立。"
+          },
+          {
+            "term": "可导必连续（但连续不一定可导）",
+            "placement": "optional",
+            "why": "帮助理解这个例子在整个微积分命题网络中的位置，属于拓展背景，不是读懂当前句子的必需前提。"
+          }
+        ],
+        "conditions_to_check": [
+          "原句断言的范围是否限定在 x=0 这一点，而非整个定义域。",
+          "连续性的判断是否使用函数在 0 处的值 f(0)=0。",
+          "可导性的判断是否检查差商 (|h|-0)/h 当 h→0 时的双侧极限是否相等。"
+        ],
+        "evidence_requests": [],
+        "teaching_goal": "读者能自己写出 |x| 的分段形式，用极限验证它在 0 处连续，用左右差商说明它在 0 处不可导，并能复述“可导必连续、连续不一定可导”的结构关系。",
+        "suggested_section_kinds": [
+          "定义回填",
+          "左右极限/左右导数计算",
+          "命题结构说明",
+          "边界与常见误解"
+        ],
+        "clarification": null
+      }
+    },
+    {
+      "task": "teach",
+      "pipeline": "8fcdb76ecc89e64dae31a5cf9ae15b718dc7579798bb369d98f833db7cf6af12",
+      "usage": {
+        "prompt_tokens": 3145,
+        "completion_tokens": 2116,
+        "total_tokens": 5261,
+        "prompt_cache_hit_tokens": 1152,
+        "prompt_cache_miss_tokens": 1993,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "complete",
+        "title": "|x| 在 0 处：为什么连续却不可导",
+        "brief": "这句话说的是：函数 f(x)=|x| 在 x=0 这一点满足连续的定义，但不满足可导的定义。关键在于可导要求在 0 处的差商 (|0+h|-|0|)/h = |h|/h 当 h→0 时极限存在，而 h 从右边趋于 0 时这个值恒为 1，从左边趋于 0 时恒为 -1，两侧不相等，所以极限不存在。原句只对 x=0 这一点下断言，并不否定 |x| 在其他点的可导性（事实上除 0 外它处处可导）。",
+        "sections": [
+          {
+            "local_id": "sec_meaning",
+            "kind": "meaning",
+            "title": "先弄清“连续”和“可导”各自要求什么",
+            "body_markdown": "两个词都是在 x=0 这一点上说的，各自有一个明确的极限条件。\n\n**连续**：要求当 x 趋近 0 时 f(x) 趋近 f(0)。因为 f(0)=|0|=0，所以要验证的是 x→0 时 |x|→0。\n\n**可导**：要求差商的极限存在。差商是\n\n((f(0+h) - f(0)) / h) = (|h| - 0) / h = |h|/h\n\n只有这个量当 h→0（从正、负两侧都趋近）时有同一个有限极限，才说 f 在 0 处可导。注意可导的定义里不允许“左右各走各的”各得一个值，必须两侧相同。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "sec_calc",
+            "kind": "mechanism",
+            "title": "把 |x| 写成两段，分别算两侧",
+            "body_markdown": "把 |x| 拆成两段，|x| 在 x≥0 时等于 x，在 x<0 时等于 -x。\n\n**验证连续**：\n- 当 x>0 且 x→0：|x|=x→0；\n- 当 x<0 且 x→0：|x|=-x→0。\n两侧都趋近 0，且 f(0)=0，所以极限存在且等于函数值。**连续成立。**\n\n**验证可导**：看差商 |h|/h。\n- h>0 时 |h|/h = h/h = 1，所以右极限是 1；\n- h<0 时 |h|/h = (-h)/h = -1，所以左极限是 -1。\n\n两侧极限不相等（1≠-1），差的极限不存在，因此 f 在 0 处不可导。\n\n这里 1 和 -1 不是“近似值”，而是 h>0 或 h<0 时差商恒定的取值，正是它们的不一致让极限失败。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "sec_boundary",
+            "kind": "boundary",
+            "title": "断言只落在 x=0 这一点",
+            "body_markdown": "原句的范围是“在 0 处”，没说别处。事实上当 a≠0 时，|x| 在 a 附近可以写成同一条直线（a>0 时写成 x，a<0 时写成 -x），差商趋于该直线的斜率 1 或 -1，所以除 0 以外处处可导。因此准确的读法是：**不可导恰好发生在 x=0 这一个点**，这是原句“在 0 处”限定的范围，不应读成“|x| 处处不可导”。\n\n顺带指出这类例子的结构意义：可导 ⇒ 连续（可导要求差商极限存在，它比连续更强），但连续 ⇏ 可导。|x| 在 0 处正是“连续但不缺可导”这一反例的标准代表。",
+            "evidence_ids": []
+          }
+        ],
+        "return_to_source": "回到原句读法：它断言的对象是 f(x)=|x|，断言的落点是 x=0，给出两个结论——在 0 处连续、在 0 处不可导。作者省略的是具体验证步骤：连续性要通过 x→0 时 |x|→0 且 f(0)=0 来确认；不可导要通过差商 |h|/h 的左右极限分别是 1 和 -1、因而不存在来确认。读的时候要保留范围限制“在 0 处”，不要把它扩大为整条曲线都不可导。",
+        "claims": [
+          {
+            "local_id": "c1",
+            "text": "原句断言 f(x)=|x| 在 x=0 处连续且在 x=0 处不可导，范围限定在 0 这一点。",
+            "appears_in": [
+              "brief",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c2",
+            "text": "f 在 0 处连续的验证是 x→0 时 |x|→0，且 f(0)=0，极限值等于函数值。",
+            "appears_in": [
+              "sec_calc",
+              "brief"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_calc"
+          },
+          {
+            "local_id": "c3",
+            "text": "f 在 0 处不可导的验证是差商 |h|/h 在 h→0+ 时为 1、在 h→0- 时为 -1，左右极限不相等，故极限不存在。",
+            "appears_in": [
+              "sec_calc",
+              "brief"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_calc"
+          },
+          {
+            "local_id": "c4",
+            "text": "|x| 在 a≠0 处可导，因此“不可导”仅发生在 x=0 这一点。",
+            "appears_in": [
+              "sec_boundary",
+              "brief"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_boundary"
+          },
+          {
+            "local_id": "c5",
+            "text": "可导蕴含连续，但连续不蕴含可导；|x| 在 0 处是后者的一个例子。",
+            "appears_in": [
+              "sec_boundary"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          }
+        ],
+        "followups": [
+          {
+            "term_or_phrase": "“可导必连续”为什么成立",
+            "section_id": "sec_boundary",
+            "why": "读者可能想确认可导 ⇒ 连续这一步的推导，而不只是记住结论。"
+          },
+          {
+            "term_or_phrase": "差商",
+            "section_id": "sec_meaning",
+            "why": "差商是导数定义的载体，想更清楚它为什么能刻画可导性可以追问。"
+          },
+          {
+            "term_or_phrase": "连续函数的其他不可导例子",
+            "section_id": "sec_boundary",
+            "why": "了解与 |x| 同类但形态不同的例子，能加固对“连续但不可导”这一现象的认识。"
+          }
+        ],
+        "micro_check": {
+          "question": "改用分段函数 g(x) = 3x（当 x≥0），g(x) = x（当 x<0）。它在 x=0 处连续吗？可导吗？请写出判断所用的差商。",
+          "hint": "先看 x→0+ 和 x→0- 时 g(x) 分别趋于多少；再看差商 (g(0+h)-g(0))/h 在 h>0 和 h<0 时分别等于多少。",
+          "answer": "连续：g(0)=0，x→0+ 时 g=3x→0，x→0- 时 g=x→0，两侧都等于 g(0)，所以连续。可导：差商 (g(h)-0)/h，h>0 时为 3h/h=3，h<0 时为 h/h=1。左极限 1 ≠ 右极限 3，故差商极限不存在，在 0 处不可导。",
+          "success_criteria": [
+            "正确写出 g(0)=0 并分别算出 x→0+、x→0- 的函数极限，得出连续。",
+            "把差商写成 (g(h)-g(0))/h，而不是用 g 以外的函数。",
+            "分别得到右差商 3 和左差商 1，并据此判定不可导。"
+          ],
+          "remediation": "若连续判断出错，回到“连续性 = 极限值等于函数值”这一段；若可导判断只写了右差商或只用 x≥0 的表达式，说明漏掉了左右两侧必须一致这一条件。"
+        },
+        "unresolved": [],
+        "clarification": null
+      }
+    },
+    {
+      "task": "review",
+      "pipeline": "a7942f27ac6ce4bcc044e078afbb595fe16d178c54934239356088a61099a056",
+      "usage": {
+        "prompt_tokens": 3726,
+        "completion_tokens": 622,
+        "total_tokens": 4348,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 3342,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "verdict": "revise",
+        "issues": [
+          {
+            "severity": "critical",
+            "location": "sec_boundary",
+            "problem": "“连续但不缺可导”这句表述错误，疑似将“连续但不一定可导”误写。“不缺可导”字面意思是“可导性并不缺失”，与原句“不可导”及全文论证直接矛盾，会误导读者对核心结论的理解。",
+            "evidence_ids": [
+              "S1"
+            ],
+            "required_change": "改为“连续但不可导”或“连续但不一定可导”，确保与原句“在 0 处连续但不可导”的否定性结论一致。"
+          },
+          {
+            "severity": "minor",
+            "location": "sec_calc",
+            "problem": "原句为“f(x)=|x| 在 0 处连续但不可导”，但候选解释中多处直接用 |x| 指代函数本身（如“把 |x| 拆成两段”“|x| 在 a 附近可以写成……”），未严格区分“函数 f(x)=|x|”与“表达式 |x|”。这在教学上通常可接受，但作为逐句审查，符号指代不够严谨。",
+            "evidence_ids": [
+              "S1"
+            ],
+            "required_change": "在首次出现处明确 f(x)=|x| 即函数 f 的定义式，后续使用“f(x)=|x|”或“函数 f”指代，避免将表达式与函数混称。"
+          },
+          {
+            "severity": "minor",
+            "location": "micro_check",
+            "problem": "变式 g(x)=3x（当 x≥0），g(x)=x（当 x<0）中，右差商计算为 (g(h)-0)/h，h>0 时 g(h)=3h，得 3；左差商 h<0 时 g(h)=h，得 1。计算正确，但 g(0) 取 3·0=0 与取第三段无冲突，然而题目未明确 g(0) 的定义方式；读者可能追问 g(0) 应由哪一段决定。",
+            "evidence_ids": [],
+            "required_change": "在题目或提示中明确 g(0) 按 x≥0 分支取值，即 g(0)=0，避免分段函数在分界点取值的歧义。"
+          }
+        ],
+        "unverified": [
+          "候选解释中“|x| 在 a≠0 处可导”的具体差商计算未逐步展开，但结论正确，未发现错误。",
+          "候选解释的“可导 ⇒ 连续”背景陈述未在证据中提供来源，但属于标准数学事实，当前任务下不构成错误。"
+        ]
+      }
+    },
+    {
+      "task": "repair",
+      "pipeline": "289639296effd57007c7ec976bb31fbdae11109d4a72cf9f07f6c3b5e7450d73",
+      "usage": {
+        "prompt_tokens": 4284,
+        "completion_tokens": 2114,
+        "total_tokens": 6398,
+        "prompt_cache_hit_tokens": 384,
+        "prompt_cache_miss_tokens": 3900,
+        "response_model": "deepseek-flash"
+      },
+      "output": {
+        "status": "complete",
+        "title": "|x| 在 0 处：为什么连续却不可导",
+        "brief": "这句话说的是：函数 f(x)=|x| 在 x=0 这一点满足连续的定义，但不满足可导的定义。关键在于可导要求在 0 处的差商 (|0+h|-|0|)/h = |h|/h 当 h→0 时极限存在，而 h 从右边趋于 0 时这个值恒为 1，从左边趋于 0 时恒为 -1，两侧不相等，所以极限不存在。原句只对 x=0 这一点下断言，并不否定 |x| 在其他点的可导性（事实上除 0 外它处处可导）。",
+        "sections": [
+          {
+            "local_id": "sec_meaning",
+            "kind": "meaning",
+            "title": "先弄清“连续”和“可导”各自要求什么",
+            "body_markdown": "两个词都是在 x=0 这一点上说的，各自有一个明确的极限条件。\n\n**连续**：要求当 x 趋近 0 时 f(x) 趋近 f(0)。因为 f(0)=|0|=0，所以要验证的是 x→0 时 |x|→0。\n\n**可导**：要求差商的极限存在。差商是\n\n((f(0+h) - f(0)) / h) = (|h| - 0) / h = |h|/h\n\n只有这个量当 h→0（从正、负两侧都趋近）时有同一个有限极限，才说 f 在 0 处可导。注意可导的定义里不允许“左右各走各的”各得一个值，必须两侧相同。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "sec_calc",
+            "kind": "mechanism",
+            "title": "把 |x| 写成两段，分别算两侧",
+            "body_markdown": "把 |x| 拆成两段，|x| 在 x≥0 时等于 x，在 x<0 时等于 -x。\n\n**验证连续**：\n- 当 x>0 且 x→0：|x|=x→0；\n- 当 x<0 且 x→0：|x|=-x→0。\n两侧都趋近 0，且 f(0)=0，所以极限存在且等于函数值。**连续成立。**\n\n**验证可导**：看差商 |h|/h。\n- h>0 时 |h|/h = h/h = 1，所以右极限是 1；\n- h<0 时 |h|/h = (-h)/h = -1，所以左极限是 -1。\n\n两侧极限不相等（1≠-1），差的极限不存在，因此 f 在 0 处不可导。\n\n这里 1 和 -1 不是“近似值”，而是 h>0 或 h<0 时差商恒定的取值，正是它们的不一致让极限失败。",
+            "evidence_ids": []
+          },
+          {
+            "local_id": "sec_boundary",
+            "kind": "boundary",
+            "title": "断言只落在 x=0 这一点",
+            "body_markdown": "原句的范围是“在 0 处”，没说别处。事实上当 a≠0 时，|x| 在 a 附近可以写成同一条直线（a>0 时写成 x，a<0 时写成 -x），差商趋于该直线的斜率 1 或 -1，所以除 0 以外处处可导。因此准确的读法是：**不可导恰好发生在 x=0 这一个点**，这是原句“在 0 处”限定的范围，不应读成“|x| 处处不可导”。\n\n顺带指出这类例子的结构意义：可导 ⇒ 连续（可导要求差商极限存在，它比连续更强），但连续 ⇏ 可导。|x| 在 0 处正是“连续但不可导”这一现象的标准代表。",
+            "evidence_ids": []
+          }
+        ],
+        "return_to_source": "回到原句读法：它断言的对象是 f(x)=|x|，断言的落点是 x=0，给出两个结论——在 0 处连续、在 0 处不可导。作者省略的是具体验证步骤：连续性要通过 x→0 时 |x|→0 且 f(0)=0 来确认；不可导要通过差商 |h|/h 的左右极限分别是 1 和 -1、因而不存在来确认。读的时候要保留范围限制“在 0 处”，不要把它扩大为整条曲线都不可导。",
+        "claims": [
+          {
+            "local_id": "c1",
+            "text": "原句断言 f(x)=|x| 在 x=0 处连续且在 x=0 处不可导，范围限定在 0 这一点。",
+            "appears_in": [
+              "brief",
+              "return_to_source"
+            ],
+            "basis": "source_statement",
+            "evidence_ids": [
+              "S1"
+            ],
+            "derivation_section_id": null
+          },
+          {
+            "local_id": "c2",
+            "text": "f 在 0 处连续的验证是 x→0 时 |x|→0，且 f(0)=0，极限值等于函数值。",
+            "appears_in": [
+              "sec_calc",
+              "brief"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_calc"
+          },
+          {
+            "local_id": "c3",
+            "text": "f 在 0 处不可导的验证是差商 |h|/h 在 h→0+ 时为 1、在 h→0- 时为 -1，左右极限不相等，故极限不存在。",
+            "appears_in": [
+              "sec_calc",
+              "brief"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_calc"
+          },
+          {
+            "local_id": "c4",
+            "text": "|x| 在 a≠0 处可导，因此“不可导”仅发生在 x=0 这一点。",
+            "appears_in": [
+              "sec_boundary",
+              "brief"
+            ],
+            "basis": "derived",
+            "evidence_ids": [],
+            "derivation_section_id": "sec_boundary"
+          },
+          {
+            "local_id": "c5",
+            "text": "可导蕴含连续，但连续不蕴含可导；|x| 在 0 处是后者的一个例子。",
+            "appears_in": [
+              "sec_boundary"
+            ],
+            "basis": "background",
+            "evidence_ids": [],
+            "derivation_section_id": null
+          }
+        ],
+        "followups": [
+          {
+            "term_or_phrase": "“可导必连续”为什么成立",
+            "section_id": "sec_boundary",
+            "why": "读者可能想确认可导 ⇒ 连续这一步的推导，而不只是记住结论。"
+          },
+          {
+            "term_or_phrase": "差商",
+            "section_id": "sec_meaning",
+            "why": "差商是导数定义的载体，想更清楚它为什么能刻画可导性可以追问。"
+          },
+          {
+            "term_or_phrase": "连续函数的其他不可导例子",
+            "section_id": "sec_boundary",
+            "why": "了解与 |x| 同类但形态不同的例子，能加固对“连续但不可导”这一现象的认识。"
+          }
+        ],
+        "micro_check": {
+          "question": "改用分段函数 g(x) = 3x（当 x≥0），g(x) = x（当 x<0）。它在 x=0 处连续吗？可导吗？请写出判断所用的差商。",
+          "hint": "先看 x→0+ 和 x→0- 时 g(x) 分别趋于多少；再看差商 (g(0+h)-g(0))/h 在 h>0 和 h<0 时分别等于多少。",
+          "answer": "连续：g(0)=0，x→0+ 时 g=3x→0，x→0- 时 g=x→0，两侧都等于 g(0)，所以连续。可导：差商 (g(h)-0)/h，h>0 时为 3h/h=3，h<0 时为 h/h=1。左极限 1 ≠ 右极限 3，故差商极限不存在，在 0 处不可导。",
+          "success_criteria": [
+            "正确写出 g(0)=0 并分别算出 x→0+、x→0- 的函数极限，得出连续。",
+            "把差商写成 (g(h)-g(0))/h，而不是用 g 以外的函数。",
+            "分别得到右差商 3 和左差商 1，并据此判定不可导。"
+          ],
+          "remediation": "若连续判断出错，回到“连续性 = 极限值等于函数值”这一段；若可导判断只写了右差商或只用 x≥0 的表达式，说明漏掉了左右两侧必须一致这一条件。"
+        },
+        "unresolved": [],
+        "clarification": null
+      }
+    }
+  ],
+  "elapsedMs": 22882,
+  "status": "contract_pass",
+  "human_review": null,
+  "learner_trial": null,
+  "date": "2026-09-21T23:37:58.487Z"
+}

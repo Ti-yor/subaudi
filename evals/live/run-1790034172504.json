@@ -1,0 +1,99 @@
+{
+  "results": [
+    {
+      "case": "K11",
+      "status": "contract_pass",
+      "review": "模型审查通过；不代表事实或学习效果已验证",
+      "calls": [
+        {
+          "task": "diagnose",
+          "usage": {
+            "prompt_tokens": 1202,
+            "completion_tokens": 732,
+            "total_tokens": 1934,
+            "prompt_cache_hit_tokens": 896,
+            "prompt_cache_miss_tokens": 306,
+            "response_model": "deepseek-flash"
+          }
+        },
+        {
+          "task": "teach",
+          "usage": {
+            "prompt_tokens": 3188,
+            "completion_tokens": 1227,
+            "total_tokens": 4415,
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 1780,
+            "response_model": "deepseek-flash"
+          }
+        },
+        {
+          "task": "review",
+          "usage": {
+            "prompt_tokens": 2841,
+            "completion_tokens": 306,
+            "total_tokens": 3147,
+            "prompt_cache_hit_tokens": 768,
+            "prompt_cache_miss_tokens": 2073,
+            "response_model": "deepseek-flash"
+          }
+        }
+      ],
+      "elapsedMs": 11789
+    },
+    {
+      "case": "K13",
+      "status": "contract_pass",
+      "review": "已按审查修订但未复审；不进入自动复用缓存",
+      "calls": [
+        {
+          "task": "diagnose",
+          "usage": {
+            "prompt_tokens": 1191,
+            "completion_tokens": 817,
+            "total_tokens": 2008,
+            "prompt_cache_hit_tokens": 896,
+            "prompt_cache_miss_tokens": 295,
+            "response_model": "deepseek-flash"
+          }
+        },
+        {
+          "task": "teach",
+          "usage": {
+            "prompt_tokens": 3439,
+            "completion_tokens": 2168,
+            "total_tokens": 5607,
+            "prompt_cache_hit_tokens": 1408,
+            "prompt_cache_miss_tokens": 2031,
+            "response_model": "deepseek-flash"
+          }
+        },
+        {
+          "task": "review",
+          "usage": {
+            "prompt_tokens": 3745,
+            "completion_tokens": 810,
+            "total_tokens": 4555,
+            "prompt_cache_hit_tokens": 768,
+            "prompt_cache_miss_tokens": 2977,
+            "response_model": "deepseek-flash"
+          }
+        },
+        {
+          "task": "repair",
+          "usage": {
+            "prompt_tokens": 4632,
+            "completion_tokens": 2185,
+            "total_tokens": 6817,
+            "prompt_cache_hit_tokens": 512,
+            "prompt_cache_miss_tokens": 4120,
+            "response_model": "deepseek-flash"
+          }
+        }
+      ],
+      "elapsedMs": 25829
+    }
+  ],
+  "totalTokensOrReserved": 28483,
+  "realAPI": true
+}

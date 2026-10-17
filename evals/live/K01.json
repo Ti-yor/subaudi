@@ -1,0 +1,466 @@
+{
+  "case": "K01",
+  "model": "deepseek-flash",
+  "pipeline": "9e7bd4c30b36ab79ff50c1687c45afceefdf54039ec326b8ce19fa798a3cbbe1",
+  "request_parameters": {
+    "max_tokens": 4096,
+    "thinking": "disabled",
+    "json": true
+  },
+  "input": {
+    "task": "teach",
+    "request_id": "K01",
+    "language": "zh-CN",
+    "reader_profile": {
+      "declared_background": "会四则运算和平均数",
+      "goal": "独立读回原句、检查条件、完成变式"
+    },
+    "selection": {
+      "anchor_id": "K01",
+      "text": "独立且方差有限时，Var(X+Y)=Var(X)+Var(Y)。"
+    },
+    "context": {
+      "nearby_blocks": [
+        "独立且方差有限时，Var(X+Y)=Var(X)+Var(Y)。"
+      ],
+      "coverage": "当前原创测试段落",
+      "extraction_issues": [],
+      "parent_excerpt": null
+    },
+    "evidence": [
+      {
+        "source_id": "S1",
+        "excerpt": "独立且方差有限时，Var(X+Y)=Var(X)+Var(Y)。",
+        "title": "方差相加",
+        "verification": "source_only"
+      }
+    ],
+    "capabilities": {
+      "web_search": false,
+      "vision": false
+    },
+    "limits": {
+      "max_sections": 8,
+      "max_checks": 1,
+      "max_followups": 3
+    },
+    "output_schema": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "enum": [
+            "complete",
+            "limited",
+            "needs_clarification"
+          ]
+        },
+        "title": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "brief": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "sections": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "kind": {
+                "enum": [
+                  "meaning",
+                  "purpose",
+                  "prerequisite",
+                  "mechanism",
+                  "example",
+                  "boundary",
+                  "comparison"
+                ]
+              },
+              "title": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "body_markdown": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              }
+            },
+            "required": [
+              "local_id",
+              "kind",
+              "title",
+              "body_markdown",
+              "evidence_ids"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 8
+        },
+        "return_to_source": {
+          "type": "string",
+          "maxLength": 16000
+        },
+        "claims": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "local_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "text": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "appears_in": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              },
+              "basis": {
+                "enum": [
+                  "source_statement",
+                  "derived",
+                  "background",
+                  "interpretation",
+                  "uncertain"
+                ]
+              },
+              "evidence_ids": {
+                "type": "array",
+                "items": {
+                  "type": "string",
+                  "maxLength": 16000
+                },
+                "maxItems": 50
+              },
+              "derivation_section_id": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              }
+            },
+            "required": [
+              "local_id",
+              "text",
+              "appears_in",
+              "basis",
+              "evidence_ids",
+              "derivation_section_id"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "followups": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "term_or_phrase": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "section_id": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "why": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "term_or_phrase",
+              "section_id",
+              "why"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "micro_check": {
+          "type": [
+            "object",
+            "null"
+          ],
+          "properties": {
+            "question": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "hint": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "answer": {
+              "type": "string",
+              "maxLength": 16000
+            },
+            "success_criteria": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "maxItems": 50
+            },
+            "remediation": {
+              "type": "string",
+              "maxLength": 16000
+            }
+          },
+          "required": [
+            "question",
+            "hint",
+            "answer",
+            "success_criteria",
+            "remediation"
+          ],
+          "additionalProperties": false
+        },
+        "unresolved": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "issue": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "effect_on_answer": {
+                "type": "string",
+                "maxLength": 16000
+              },
+              "next_step": {
+                "type": "string",
+                "maxLength": 16000
+              }
+            },
+            "required": [
+              "issue",
+              "effect_on_answer",
+              "next_step"
+            ],
+            "additionalProperties": false
+          },
+          "maxItems": 50
+        },
+        "clarification": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      },
+      "required": [
+        "status",
+        "title",
+        "brief",
+        "sections",
+        "return_to_source",
+        "claims",
+        "followups",
+        "micro_check",
+        "unresolved",
+        "clarification"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "draft": {
+    "status": "complete",
+    "title": "为什么独立时方差可以相加：Var(X+Y)=Var(X)+Var(Y)",
+    "brief": "这句话在说：如果你把两个随机变量 X、Y 加起来得到新变量 X+Y，那么只要 X 和 Y 相互独立、并且各自方差有限，就有 Var(X+Y)=Var(X)+Var(Y)。方差度量的是“波动大小”（分散程度）。关键是“独立”这一条：它保证 X 和 Y 之间没有协同波动，X+Y 的波动就正好是两者波动之和。若两者不独立，这个等式一般不成立，需要再减去（或加上）一个由它们相关性产生的项。先把 X、Y 看成两个可重复观测的量（如两次独立测量的误差），下面的例子和推导就是按这个思路展开的。",
+    "sections": [
+      {
+        "local_id": "mean_var",
+        "kind": "prerequisite",
+        "title": "先固定 Var 到底在量什么",
+        "body_markdown": "Var(X) 读作“X 的方差”，衡量 X 取值围绕其平均数 E(X) 的波动大小。定义是\n\nVar(X)=E[(X−E(X))²]。\n\n它是偏差平方的期望（即平均）。方差越大，X 越分散。条件“方差有限”就是说这个期望是有限数，否则等号两边都可能是无穷，讨论无意义。\n\n一个最常用、含平方的等价写法是\n\nVar(X)=E(X²)−[E(X)]²。\n\n另外要记住平移不改变方差：Var(X+a)=Var(X)，常数 a 的方差为 0。这几点是下面判断“条件是否够用”的基础。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "why_indep",
+        "kind": "mechanism",
+        "title": "为什么“独立”是关键：先看不独立时多出来的那一项",
+        "body_markdown": "先给一般公式（这里只用到期望的线性性质与方差定义）：\n\nVar(X+Y)=Var(X)+Var(Y)+2[E(XY)−E(X)E(Y)]。\n\n方括号 E(XY)−E(X)E(Y) 叫 X 和 Y 的协方差，记作 Cov(X,Y)，它刻画二者是否“同起同落”。\n\n当 X、Y 独立时，有一个可用的结论：E(XY)=E(X)E(Y)，于是协方差为 0，方括号项消失，公式就退化成 Var(X)+Var(Y)。这正是原句用“独立”而不是“方差有限”来换来的那一步。\n\n注意方向：独立 ⇒ 协方差为 0，但协方差为 0 一般不推出独立。也就是说，原文的“独立”是一个足够条件，不是“协方差为 0”的等价说法。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "cond_check",
+        "kind": "boundary",
+        "title": "两个条件各自防什么错",
+        "body_markdown": "原句同时给了两个条件，作用不同：\n\n- “独立”：去掉协方差项。若不独立，等式一般不成立。例如令 Y=X（完全同向），则 Var(X+Y)=Var(2X)=4Var(X)，而 Var(X)+Var(Y)=2Var(X)，两者不等——少了 2Var(X) 的协方差项。\n- “方差有限”：保证 Var(X)、Var(Y) 都是有限实数，减法/加法不出现 ∞−∞ 或 ∞=∞ 的未定义情形。\n\n所以“独立且方差有限”应理解为该结论的成立条件，缺一个都可能有反例。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "example",
+        "kind": "example",
+        "title": "跟着算一个最简单的例子",
+        "body_markdown": "设 X 是一枚公平骰子朝上的点数（1 到 6 等概率），Y 是另一枚完全独立的公平骰子的点数。两次掷骰互不影响，故 X、Y 独立。\n\n单枚骰子：E(X)=(1+2+…+6)/6=3.5；\nE(X²)=(1+4+9+16+25+36)/6=91/6≈15.17；\nVar(X)=91/6−(3.5)²=91/6−12.25=35/12≈2.92。\n\nY 与 X 分布相同，Var(Y)=35/12。\n由结论，Var(X+Y)=35/12+35/12=35/6≈5.83。\n\n也可直接验证：X+Y 取值 2…12，关于 7 对称，其方差恰为 35/6。这不是巧合，而是独立条件下“波动直接相加”的结果。",
+        "evidence_ids": []
+      },
+      {
+        "local_id": "conclusion",
+        "kind": "meaning",
+        "title": "这句话该怎么用",
+        "body_markdown": "操作步骤很简单：\n\n1. 先确认 X、Y 相互独立（例如两次互不干扰的测量或试验）；\n2. 确认 Var(X)、Var(Y) 都有限；\n3. 直接相加：Var(X+Y)=Var(X)+Var(Y)。\n\n若只知道协方差为 0 而不知是否独立，在“方差有限且协方差为 0”这一更弱条件下，该等式同样成立；但若两者有相关性，则不能直接相加，需用一般公式补上协方差项。",
+        "evidence_ids": []
+      }
+    ],
+    "return_to_source": "回到原句：“独立且方差有限时，Var(X+Y)=Var(X)+Var(Y)。”它是一句带条件的结论，而非恒等式。作者省略的是从定义到结果的中间一步：一般情况下 Var(X+Y) 还含协方差项，独立使该项为 0；而“方差有限”保证所涉及的方差都是有限数。读这句话时要先核对两个条件是否满足，再使用等式；缺少独立性时不能直接相加。",
+    "claims": [
+      {
+        "local_id": "c1",
+        "text": "原句断言：在独立且方差有限的条件下，Var(X+Y)=Var(X)+Var(Y)。",
+        "appears_in": [
+          "brief",
+          "conclusion",
+          "return_to_source"
+        ],
+        "basis": "source_statement",
+        "evidence_ids": [
+          "S1"
+        ],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c2",
+        "text": "Var(X)=E[(X−E(X))²]，衡量 X 围绕期望的波动大小，且等价于 E(X²)−[E(X)]²。",
+        "appears_in": [
+          "mean_var",
+          "example"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": "mean_var"
+      },
+      {
+        "local_id": "c3",
+        "text": "一般情况下 Var(X+Y)=Var(X)+Var(Y)+2Cov(X,Y)。",
+        "appears_in": [
+          "why_indep",
+          "conclusion"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "why_indep"
+      },
+      {
+        "local_id": "c4",
+        "text": "X、Y 独立时 E(XY)=E(X)E(Y)，从而协方差为 0，等式退化为 Var(X)+Var(Y)。",
+        "appears_in": [
+          "why_indep"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": "why_indep"
+      },
+      {
+        "local_id": "c5",
+        "text": "独立可推出协方差为 0，但协方差为 0 一般不推出独立，因此“协方差为 0 且方差有限”也能支撑该等式。",
+        "appears_in": [
+          "why_indep",
+          "conclusion"
+        ],
+        "basis": "background",
+        "evidence_ids": [],
+        "derivation_section_id": "why_indep"
+      },
+      {
+        "local_id": "c6",
+        "text": "“方差有限”保证等式中的方差均为有限实数，避免出现无穷导致的未定义运算。",
+        "appears_in": [
+          "mean_var",
+          "cond_check"
+        ],
+        "basis": "interpretation",
+        "evidence_ids": [],
+        "derivation_section_id": null
+      },
+      {
+        "local_id": "c7",
+        "text": "Y=X 是完全相关的反例：Var(2X)=4Var(X) 不等于 Var(X)+Var(X)=2Var(X)，说明缺少独立条件时等式失效。",
+        "appears_in": [
+          "cond_check"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "cond_check"
+      },
+      {
+        "local_id": "c8",
+        "text": "两枚独立公平骰子点数之和的方差为 35/6，等于两倍的单骰方差 35/12。",
+        "appears_in": [
+          "example"
+        ],
+        "basis": "derived",
+        "evidence_ids": [],
+        "derivation_section_id": "example"
+      }
+    ],
+    "followups": [
+      {
+        "term_or_phrase": "协方差 Cov(X,Y)",
+        "section_id": "why_indep",
+        "why": "它是“独立”被去掉后多出来的那一项，理解它才能知道不独立时该怎么补。"
+      },
+      {
+        "term_or_phrase": "期望 E(XY) 与 E(X)E(Y)",
+        "section_id": "why_indep",
+        "why": "独立为什么能消掉协方差项，取决于这条期望分解规则，可进一步了解它在什么条件下成立。"
+      },
+      {
+        "term_or_phrase": "方差、独立与协方差为 0 的关系",
+        "section_id": "cond_check",
+        "why": "容易误把“协方差为 0”当成“独立”，需要弄清两者的方向性差别。"
+      }
+    ],
+    "micro_check": {
+      "question": "设 X、Y 独立，Var(X)=4，Var(Y)=9，Var(X+Y) 是多少？如果改为 Y=2X（即完全相关），还能用原式吗？为什么？",
+      "hint": "第一问看独立条件是否满足后直接相加。第二问先算 Var(2X) 再和 Var(X)+Var(Y) 比较。",
+      "answer": "独立时 Var(X+Y)=4+9=13。若 Y=2X，则 X+Y=3X，Var(X+Y)=9Var(X)=36，不能用原式，因为此时 X、Y 不独立，协方差项 2Cov(X,2X)=2·2Var(X)=16≠0。",
+      "success_criteria": [
+        "独立情形得到 13。",
+        "识别出第二问中独立性不成立。",
+        "用一般公式或直接计算说明协方差项不为 0。"
+      ],
+      "remediation": "若第二问仍写 13，说明只记住了“方差相加”而忽略了独立条件；请回看《为什么“独立”是关键》和《两个条件各自防什么错》。"
+    },
+    "unresolved": [],
+    "clarification": null
+  },
+  "usage": {
+    "prompt_tokens": 2311,
+    "completion_tokens": 2219,
+    "total_tokens": 4530,
+    "prompt_cache_hit_tokens": 896,
+    "prompt_cache_miss_tokens": 1415,
+    "response_model": "deepseek-flash"
+  },
+  "elapsedMs": 10463,
+  "status": "contract_pass",
+  "human_review": null,
+  "learner_trial": null,
+  "date": "2026-09-21T23:33:56.728Z"
+}

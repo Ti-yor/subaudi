@@ -1,0 +1,82 @@
+{
+  "status": "complete",
+  "title": "没有断开，为什么仍然不能求导？",
+  "brief": "这里的 f(x)=|x| 在 0 附近越靠近 0，函数值也越靠近 f(0)=0，所以它在 0 处连续。但从 0 左侧计算的斜率是 −1，右侧是 1，没有同一个极限，因此在 0 处不可导。",
+  "sections": [
+    {
+      "local_id": "s1",
+      "kind": "meaning",
+      "title": "连续与可导检查的事情不同",
+      "body_markdown": "原文讨论的是 f(x)=|x| 在 x=0 处的性质。[S1] 连续检查 x 接近 0 时 f(x) 是否接近 f(0)；可导检查差商 [f(h)−f(0)]/h 在非零的 h 从两侧接近 0 时是否趋于同一个有限值。差商就是从点 (0,f(0)) 到邻近点 (h,f(h)) 的连线斜率。",
+      "evidence_ids": [
+        "S1"
+      ]
+    },
+    {
+      "local_id": "s2",
+      "kind": "mechanism",
+      "title": "把两侧分别算出来",
+      "body_markdown": "由于 f(0)=0，差商是 |h|/h。当 h>0 时它恒等于 1；当 h<0 时它恒等于 −1。所以不论 h 多么接近 0，两侧都不能趋于同一个数。与此同时，h 接近 0 时 |h| 接近 0，所以连续的要求仍然满足。",
+      "evidence_ids": []
+    }
+  ],
+  "return_to_source": "原句把两个不同的检查压在了一起：函数值能够接近原点的值，并不保证两侧斜率趋于同一个数。这个例子说明连续不能保证可导。",
+  "claims": [
+    {
+      "local_id": "c1",
+      "text": "原文讨论 f(x)=|x| 在 0 处的性质。",
+      "appears_in": [
+        "s1"
+      ],
+      "basis": "source_statement",
+      "evidence_ids": [
+        "S1"
+      ],
+      "derivation_section_id": null
+    },
+    {
+      "local_id": "c2",
+      "text": "连续检查函数值的极限，可导检查差商的有限极限。",
+      "appears_in": [
+        "s1",
+        "return_to_source"
+      ],
+      "basis": "background",
+      "evidence_ids": [],
+      "derivation_section_id": null
+    },
+    {
+      "local_id": "c3",
+      "text": "|x| 在 0 处连续但不可导。",
+      "appears_in": [
+        "brief",
+        "s2",
+        "return_to_source"
+      ],
+      "basis": "derived",
+      "evidence_ids": [
+        "S1"
+      ],
+      "derivation_section_id": "s2"
+    }
+  ],
+  "followups": [
+    {
+      "term_or_phrase": "极限",
+      "section_id": "s1",
+      "why": "若还不能理解接近某个数，需要补这个前置。"
+    }
+  ],
+  "micro_check": {
+    "question": "如果改成 g(x)=x²，在 0 处的差商是什么？从两侧接近 0 时是否趋于同一个数？",
+    "hint": "先计算 [g(h)−g(0)]/h，注意 h 不为 0。",
+    "answer": "差商为 h，从两侧接近 0 时都趋于 0，所以 g 在 0 处可导，导数为 0。",
+    "success_criteria": [
+      "正确得到差商 h",
+      "检查两侧都趋于 0"
+    ],
+    "remediation": "若只看图觉得平滑而不会计算，回到差商的定义，先代入 g(h) 和 g(0)。"
+  },
+  "unresolved": [],
+  "clarification": null
+}
